@@ -5,6 +5,9 @@
 {% block body %}
 <div class="container">
     <h1 class='mt-5 mb-4'>Liste des catégories</h1>
+
+    {% include 'layouts/_flash_message.html.twig' %}
+
     <table class='table'>
         <tr>
             <th>Nom de la catégorie</th>
