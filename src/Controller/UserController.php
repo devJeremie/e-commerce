@@ -26,6 +26,7 @@ class UserController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', "Le rôle éditeur à bien été ajouté à l'utilisateur");
+        
         return $this->redirectToRoute('app_user');
     }
 }

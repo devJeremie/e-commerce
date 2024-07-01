@@ -5,6 +5,9 @@
 {% block body %}
     <div class="container">
         <h1 class="mt-4 mb-5">Liste des utilisateurs</h1>
+
+        {% include 'layouts/_flash_message.html.twig' %}
+
         <table class='table'>
             <tr>
                 <th>id</th>
@@ -26,8 +29,10 @@
                         {% endfor %}
                     </td>
                     <td>
-                        <a onclick="return confirm('Etes-vous sur d'affecter ce rôle a ce user ?')" href="{{ path('app_user_to_editor', {'id':user.id}) }}" class="btn-outline-primary">Ajouter le rôle éditeur</a>
-                        <a href="" class="btn btn-danger">Supprimer</a>
+                        {% if ('ROLE_ADMIN' in user.roles) == false %}
+                            <a onclick= "return confirm('Voulez vous vraiment affecter ce rôle à ce user ?')" class="btn btn-outline-primary" href="{{ path('app_user_to_editor', {'id':user.id}) }}" >Ajouter le rôle éditeur</a>
+                            <a href="" class="btn btn-danger">Supprimer</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
