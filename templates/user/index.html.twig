@@ -26,6 +26,7 @@
                         {% endfor %}
                     </td>
                     <td>
+                        <a onclick="return confirm('Etes-vous sur d'affecter ce rôle a ce user ?')" href="{{ path('app_user_to_editor', {'id':user.id}) }}" class="btn-outline-primary">Ajouter le rôle éditeur</a>
                         <a href="" class="btn btn-danger">Supprimer</a>
                     </td>
                 </tr>
