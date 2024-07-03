@@ -3,14 +3,15 @@
 {% block title %}SubCategory index{% endblock %}
 
 {% block body %}
-    <h1>SubCategory index</h1>
 
-    <table class="table">
+<div class="container">
+    <h1 class="mt-5">Sous Catégories</h1>
+
+    <table class="table mt-5">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
+                <th>Nom</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -25,11 +26,12 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Pas de catégorie enregistrée</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_sub_category_new') }}">Create new</a>
+    <a class="btn btn-outline-primary" href="{{ path('app_sub_category_new') }}">Crée nouvelle catégorie</a>
+</div>
 {% endblock %}
