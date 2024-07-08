@@ -3,11 +3,13 @@
 {% block title %}Modifier les sous-catégories{% endblock %}
 
 {% block body %}
+<div class="container">
     <h1>Modifier les sous-catégories</h1>
 
-    {{ include('sub_category/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('sub_category/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('app_sub_category_index') }}">Retour à la liste</a>
+    <a class="btn btn-warning" href="{{ path('app_sub_category_index') }}">Retour à la liste</a>
 
     {{ include('sub_category/_delete_form.html.twig') }}
+</div>
 {% endblock %}

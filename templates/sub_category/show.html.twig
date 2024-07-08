@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SubCategory{% endblock %}
+{% block title %}Sous-catégories{% endblock %}
 
 {% block body %}
-    <h1>SubCategory</h1>
+<div class="container">
+    <h1>Sous-catégories</h1>
 
     <table class="table">
         <tbody>
@@ -23,4 +24,5 @@
     <a class="btn btn-success" href="{{ path('app_sub_category_edit', {'id': sub_category.id}) }}">Modifier</a>
 
     {{ include('sub_category/_delete_form.html.twig') }}
+</div>    
 {% endblock %}
