@@ -31,6 +31,7 @@ class ProductType extends AbstractType
                             'image/png',
                             'image/jpg',
                         ],
+                        'maxSizeMessage'=>'Votre image ne doit pas dépasser 1024ko',
                         'mimeTypesMessage' => 'Veuillez choisir un fichier de type image valide(jpeg, png, jpg)!!',
                     ])
                 ]

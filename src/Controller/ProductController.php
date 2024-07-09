@@ -13,7 +13,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-#[Route('/product')]
+#[Route('/editor/product')]
 class ProductController extends AbstractController
 {
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
@@ -35,15 +35,17 @@ class ProductController extends AbstractController
             $image = $form->get('image')->getData();/* on recup l'image et son contenu*/
    
             if ($image) {/*si l'image existe*/
-                $imageName = pathinfo($image->getClientImageName(), PATHINFO_FILENAME);
-                $safeImageName = $slugger->slug($imageName);/* permet de recup des image avec espace dans le nom et l'enlever*/
-                $newImageName = $safeImageName.'-'.uniqid().'.'.$image->guessExtension();/*cree un id unique a toute les images meme si elles ont un nom similaire*/
+                $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeImageName = $slugger->slug($originalName);/* permet de recup des image avec espace dans le nom et l'enlever*/
+                $newFileImageName = $safeImageName.'-'.uniqid().'.'.$image->guessExtension();/*cree un id unique a toute les images meme si elles ont un nom similaire*/
 
                 try {
-                    $image->move($this->getParameter('image_directory'), $newImageName);/* on recup l'image et on la renomme et on la stocke dans le repoertoire */
-                }catch (FileException $exception) {/*en cas d'erreur*/
-                    $product->setImage($newImageName);
-                }
+                    $image->move
+                        ($this->getParameter('image_directory'),
+                        $newFileImageName);/* on recup l'image et on la renomme et on la stocke dans le repoertoire */
+                }catch (FileException $exception) {}/*en cas d'erreur*/
+                    $product->setImage($newFileImageName);
+                
             }
 
             $entityManager->persist($product);
