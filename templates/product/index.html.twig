@@ -13,18 +13,29 @@
                 <th>Nom</th>
                 <th>Description</th>
                 <th>Prix</th>
+                <th>stock</th>
                 <th>Actions</th>
             </tr>
         </thead>
+
         <tbody>
         {% for product in products %}
             <tr>
                 <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
+                <td>{{ product.description|slice(0,60) }} ...</td><!--Decoupe la description et met ... à la fin-->
                 <td>{{ product.price }}</td>
                 <td>
-                    <a class="btn btn-outline-primary" href="{{ path('app_product_show', {'id': product.id}) }}">Voir</a>
+                    {% if product.stock > 0  %}
+                        {{ product.stock }}
+                        
+                    {% else %}
+                        <span class="text-danger">Stock épuisé</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_product_show', {'id': product.id}) }}">Voir</a>
                     <a class="btn btn-outline-success" onclick=" return confirm('Voulez vous vraiment modifier le produit ?')" href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
+                    <a class="btn btn-outline-info" href="">Ajouter du stock</a>
                 </td>
             </tr>
         {% else %}
@@ -35,6 +46,6 @@
         </tbody>
     </table>
 
-    <a class="btn btn-outline-primary" href="{{ path('app_product_new') }}">Créer nouveau produit</a>
+    <a class="btn btn-success" href="{{ path('app_product_new') }}">Créer nouveau produit</a>
 </div>
 {% endblock %}
