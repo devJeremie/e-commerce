@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\AddProductHistory;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,6 +53,13 @@ class ProductController extends AbstractController
             $entityManager->persist($product);
             $entityManager->flush();
 
+            $stockHistory = new AddProductHistory();/*nouvelle instanciation de la classe*/
+            $stockHistory->setQuantity($product->getStock());/*on recup l'id du produit et on ajoute au stock*/
+            $stockHistory->setProduct($product);/*on insere le produit*/
+            $stockHistory->setCreatedAt(new DateTimeImmutable());
+            $entityManager->persist($stockHistory);
+            $entityManager->flush();/*effectue la mise a jour en bdd*/
+            
             $this->addFlash('success','Votre produit a été ajouté');
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
