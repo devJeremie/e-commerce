@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\AddProductHistory;
 use App\Entity\Product;
+use App\Form\AddProductHistoryType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use DateTimeImmutable;
@@ -108,5 +109,43 @@ class ProductController extends AbstractController
         }
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/add/product/{id}/stock', name: 'app_product_stock_add', methods: ['POST','GET'])]
+    public function stockAdd($id, EntityManagerInterface $entityManager, Request $request, ProductRepository $productRepository): Response
+    {
+        $stockAdd = new AddProductHistory();
+        $form =$this->createForm(AddProductHistoryType::class, $stockAdd);
+        $form->handleRequest($request);
+
+        $product = $productRepository->find($id);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if($stockAdd->getQuantity()>0){
+                $newQuantity = $product->getStock() + $stockAdd->getQuantity();
+                $product->setStock($newQuantity);
+
+                $stockAdd->setCreatedAt(new DateTimeImmutable());
+                $stockAdd->setProduct($product);
+                $entityManager->persist($stockAdd);
+                $entityManager->flush();
+
+                $this->addFlash('success', "Le stock du produit à été modifié");
+                return $this->redirectToRoute('app_product_index');
+            }else {
+                $this->addFlash('danger', "Le stock du produit ne doit pas être inférieur à zéro");
+                return $this->redirectToRoute('app_product_stock_add', ['id'=>$product->getId()]);
+            }
+
+            
+          
+        }
+
+        return $this->render('product/addStock.html.twig',
+            ['form'=> $form->createView(),
+             'product' => $product,
+            ]
+        );
     }
 }

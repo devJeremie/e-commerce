@@ -35,7 +35,7 @@
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_product_show', {'id': product.id}) }}">Voir</a>
                     <a class="btn btn-outline-success" onclick=" return confirm('Voulez vous vraiment modifier le produit ?')" href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
-                    <a class="btn btn-outline-info" href="">Ajouter du stock</a>
+                    <a class="btn btn-outline-info" href="{{ path('app_product_stock_add', {'id': product.id}) }}">Ajouter du stock</a>
                 </td>
             </tr>
         {% else %}
