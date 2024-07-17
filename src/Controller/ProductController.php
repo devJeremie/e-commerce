@@ -156,5 +156,8 @@ class ProductController extends AbstractController
         $product = $productRepository->find($id);/*on recupere le produit passé en paramètre*/
         $productAddHistory = $addProductHistoryRepository->findBy(['product'=>$product],['id'=>'DESC']);
         
+        return $this->render('product/addedHistoryStockShow.html.twig',[
+            "productsAdded"=>$productAddHistory
+        ]);
     }
 }

@@ -27,11 +27,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_product_index') }}">back to list</a>
+    <a href="{{ path('app_product_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+    <a class="btn btn-outline-success" href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
 
-    <a href="{{ path('app_product_stock_add_history', {'id': product.id}) }}"></a>
+    <a href="{{ path('app_product_stock_add_history', {'id': product.id}) }}">Afficher l'historique de stock</a>
 
     {{ include('product/_delete_form.html.twig') }}
 </div>
