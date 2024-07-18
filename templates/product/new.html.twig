@@ -6,7 +6,7 @@
 <div class="container">
     <h1 class="mt-5 mb-5">Créer un nouveau produit</h1>
 
-    {{ include('product/_form.html.twig') }}
+    {{ include('product/_form.html.twig', {'button_label': 'Ajouter'}) }}
 
     <a href="{{ path('app_product_index') }}" class="btn btn-outline-primary">Retour à la liste</a>
 </div>
