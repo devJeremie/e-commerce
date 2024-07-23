@@ -8,3 +8,8 @@
     font-size: 15px;
     font-weight: bold;
 }
+
+.titleProductLink{
+    text-decoration: none;
+    color: rgb(8, 104, 8);
+}
