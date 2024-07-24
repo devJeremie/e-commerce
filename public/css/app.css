@@ -13,3 +13,7 @@
     text-decoration: none;
     color: rgb(8, 104, 8);
 }
+
+.categoryTitle{
+    font-weight: bold;
+}

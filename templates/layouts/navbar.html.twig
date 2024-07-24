@@ -12,18 +12,23 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
         </li>
-        <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Catégories
-              </a>
-              <ul class="dropdown-menu">
-                {% for category in categories %}
-                  <li><a class="dropdown-item" href="">{{ category.name }}</a></li>
-                {% endfor %}
+        {% if categories is defined %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Catégories
+            </a>
+            <ul class="dropdown-menu">
+              {% for category in categories %}
+                <li><a class="dropdown-item text-primary categoryTitle" href="#">{{ category.name }}</a></li>
+                  {% for subCategory in category.subCategories %}
+                  <li><a class="dropdown-item" href="">{{ subCategory.name }}</a></li>
+                  {% endfor %}
                 <li><hr class="dropdown-divider"></li>
-                  
-              </ul>
-            </li>
+              {% endfor %}
+              
+            </ul>
+          </li>
+        {% endif %}
 
         {% if is_granted("ROLE_ADMIN") %}
             <li class="nav-item dropdown">
