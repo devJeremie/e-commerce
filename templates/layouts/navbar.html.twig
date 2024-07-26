@@ -49,10 +49,14 @@
               </ul>
             </li>
         {% endif %}
-
-        {# <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Link</a>
-        </li> #}
+        {% if app.user == false %}
+          <li class="nav-item">
+            <a href="{{ path('app_register') }} " class='nav-link'>S'inscrire</a>
+          </li> 
+          <li class="nav-item">
+            <a href="{{ path('app_login') }} " class='nav-link'>Se connecter</a>
+          </li> 
+        {% endif %}
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

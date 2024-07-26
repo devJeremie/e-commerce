@@ -11,8 +11,9 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h1 class="card-title">{{ product.name }}</h1>
+                        <h1 class="card-title text-success">{{ product.name }}</h1>
                         <p class="card-text">{{ product.description }} </p>
+                        <h3>{{ product.price }} €</h3> <!-- altgr + e pour le sigle euro-->
                         <a href="" class="btn btn-outline-success">Ajouter au panier</a>
                     </div>
                 </div>
@@ -27,6 +28,7 @@
                         <div class="card-body">
                             <a class="titleProductLink" href="{{ path('app_home_product_show',{'id':product.id}) }} "><h5 class="card-title titleProduct">{{ product.name }}</h5></a>
                             <p class="card-text">{{ product.description|slice(0,60) }}...</p>
+                            <h3>{{ product.price }} €</h3> <!-- altgr + e pour le sigle euro-->
                             <a href="#" class="btn btn-outline-success">Ajouter au panier</a>
                         </div>
                     </div>
