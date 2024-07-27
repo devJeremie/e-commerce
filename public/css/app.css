@@ -17,3 +17,10 @@
 .categoryTitle{
     font-weight: bold;
 }
+
+.paginatorButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2%;
+}
