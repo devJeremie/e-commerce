@@ -14,7 +14,7 @@
         </li>
         {% else %}
         <li class="page-item active" aria-current="page">
-          <a style="background: green" class="page-link" href="{{ path(route, query|merge({(pageParameterName):page})) }}">{{ page }} </a>
+          <a style="background: green" class="page-link disabled" href="{{ path(route, query|merge({(pageParameterName):page})) }}">{{ page }} </a>
         </li>
       {% endif %}
     {% endfor %}
