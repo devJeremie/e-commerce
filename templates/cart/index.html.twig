@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CartController!{% endblock %}
+{% block title %}Panier{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -13,6 +13,17 @@
                 <th>Prix total</th>
                 <th>Action</th>
             </tr>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.product.name }} </td>
+                    <td>{{ item.product.price }} </td>
+                    <td>{{ item.quantity }} </td>
+                    <td>{{ item.product.price * item.quantity }} </td>
+                    <td>
+                        <a href="" class="text-danger text-decoration-none">Supprimer du panier</a> 
+                    </td>
+                </tr>
+            {% endfor %}
         </table>
     </div>
 {% endblock %}
