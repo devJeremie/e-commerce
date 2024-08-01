@@ -20,17 +20,19 @@
                     <td>{{ item.quantity }} </td>
                     <td>{{ item.product.price * item.quantity }} </td>
                     <td>
-                        <a href="" class="text-danger text-decoration-none">Supprimer du panier</a> 
+                        <a href="{{ path('app_cart_product_remove',{'id':item.product.id }) }}" class="text-danger text-decoration-none">Supprimer du panier</a> 
                     </td>
                 </tr>
             {% else %}
                 <p>Votre panier est vide</p>
             {% endfor %}
         </table>
-        <h2>Total: {{ total }} €</h2>
-        <div class="row">
-            <a href="" class="btn btn-primary col-2 m-lg-1">Valider la commande</a>
-            <a href="" class="btn btn-outline-danger col-2 m-lg-1">Supprimer le panier</a>
-        </div>
+        {% if total > 0 %}
+            <h2>Total: {{ total }} €</h2>
+            <div class="row">
+                <a href="" class="btn btn-primary col-2 m-lg-1">Valider la commande</a>
+                <a href="{{ path('app_cart_remove')}}" class="btn btn-outline-danger col-2 m-lg-1">Supprimer le panier</a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

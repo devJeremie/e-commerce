@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des villes{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class='mt-5 mb-4'>Liste des villes</h1>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Frais de port</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for city in cities %}
+                <tr>
+                    <td>{{ city.id }}</td>
+                    <td>{{ city.name }}</td>
+                    <td>{{ city.shippingCost }}</td>
+                    <td>
+                        <a href="{{ path('app_city_show', {'id': city.id}) }}">Voir</a>
+                        <a href="{{ path('app_city_edit', {'id': city.id}) }}">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Pas d'enregistrement</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_city_new') }}">Créer nouvelle ville</a>
+    </div>
+{% endblock %}
