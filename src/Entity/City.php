@@ -33,7 +33,7 @@ class City
    
     public function __construct()
     {
-        $this->createdAt = new ArrayCollection();
+        //$this->createdAt = new ArrayCollection();
         $this->orders = new ArrayCollection();
     }
 
