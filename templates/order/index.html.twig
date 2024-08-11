@@ -15,9 +15,20 @@
             <div class="col-4 mt-5">
                 <span class='mb-2'>Montant à payer: </span>
                 <h3>{{ total }} €</h3>  
-                <span>Frais de livraison</span>
-                
+                <span>Frais de livraison</span>   
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        // $(document).ready(function(){ //si le document est bien charge cela affiche cela
+        //     alert('hello world')
+        // });
+        $(document).ready(function(){
+            const citySelector = $('#order_city');
+            const cityValue = citySelector.val();
+            
+        })
+    </script>
+    
 {% endblock %}

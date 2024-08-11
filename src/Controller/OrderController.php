@@ -45,4 +45,10 @@ class OrderController extends AbstractController
             'total'=>$total,
         ]);
     }
+
+    #[Route('/city/{id}/shipping/cost', name: 'app_city_shipping_cost')]
+    public function cityShippingCost(City $city): Response
+    {
+        dd($city);
+    }
 }
