@@ -15,7 +15,8 @@
             <div class="col-4 mt-5">
                 <span class='mb-2'>Montant à payer: </span>
                 <h3>{{ total }} €</h3>  
-                <span>Frais de livraison</span>   
+                <span>Frais de livraison</span> 
+                <h3 id="shippingCost"></h3>  
             </div>
         </div>
     </div>
@@ -24,11 +25,34 @@
         // $(document).ready(function(){ //si le document est bien charge cela affiche cela
         //     alert('hello world')
         // });
+       // Lorsque le document est prêt (c'est-à-dire que la page a fini de charger)
         $(document).ready(function(){
+            // Sélectionne l'élément HTML avec l'id "order_city" et stocke-le dans la variable citySelector
             const citySelector = $('#order_city');
+                // Récupère la valeur actuelle de l'élément citySelector (c'est-à-dire la valeur sélectionnée dans la liste déroulante)
             const cityValue = citySelector.val();
-            
-        })
+                // Construit l'URL de la requête AJAX en fonction de la valeur de la ville sélectionnée
+            const url = `http://localhost:8000/city/${cityValue}/shipping/cost`;
+                // Envoie une requête AJAX de type GET à l'URL construite
+            $.ajax({
+                // L'URL de la requête
+                url: url,
+                // Le type de requête (ici, GET)
+                type: 'GET',
+                // Fonction appelée en cas de succès de la requête
+                success: function(response) {
+                    const newResponse = JSON.parse(response)
+                    if (parseInt(newResponse.status) === 200){
+                        console.log(newResponse.status)
+                        $
+                    }
+                },
+                // Fonction appelée en cas d'erreur de la requête
+                error: function(xhr, status, error) {
+                // À remplacer par le code à exécuter en cas d'erreur
+                }
+            });
+        });
     </script>
     
 {% endblock %}

@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
 use App\Entity\Order;
 use App\Form\OrderType;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class OrderController extends AbstractController
 {
@@ -49,6 +50,8 @@ class OrderController extends AbstractController
     #[Route('/city/{id}/shipping/cost', name: 'app_city_shipping_cost')]
     public function cityShippingCost(City $city): Response
     {
-        dd($city);
+        $cityShippingPrice = $city->getShippingCost();
+
+        return new Response(json_encode(['status'=>200, "message"=>'on', 'content'=> $cityShippingPrice]));
     }
 }
