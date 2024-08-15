@@ -16,7 +16,10 @@
                 <span class='mb-2'>Montant à payer: </span>
                 <h3>{{ total }} €</h3>  
                 <span>Frais de livraison</span> 
-                <h3 id="shippingCost"></h3>  
+                <h3>
+                    <span id="shippingCost"></span>
+                    €
+                </h3>  
             </div>
         </div>
     </div>
@@ -44,15 +47,18 @@
                     const newResponse = JSON.parse(response)
                     if (parseInt(newResponse.status) === 200){
                         console.log(newResponse.status)
-                        $
+                        $("#shippingCost").text(newResponse.content)
                     }
                 },
                 // Fonction appelée en cas d'erreur de la requête
                 error: function(xhr, status, error) {
                 // À remplacer par le code à exécuter en cas d'erreur
                 }
-            });
-        });
+            })
+            citySelector.on('change',function() {
+                alert('hello world')
+            })
+        })
     </script>
     
 {% endblock %}
