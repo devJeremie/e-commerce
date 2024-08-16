@@ -36,27 +36,36 @@
             const cityValue = citySelector.val();
                 // Construit l'URL de la requête AJAX en fonction de la valeur de la ville sélectionnée
             const url = `http://localhost:8000/city/${cityValue}/shipping/cost`;
-                // Envoie une requête AJAX de type GET à l'URL construite
-            $.ajax({
-                // L'URL de la requête
-                url: url,
-                // Le type de requête (ici, GET)
-                type: 'GET',
-                // Fonction appelée en cas de succès de la requête
-                success: function(response) {
-                    const newResponse = JSON.parse(response)
-                    if (parseInt(newResponse.status) === 200){
-                        console.log(newResponse.status)
-                        $("#shippingCost").text(newResponse.content)
+
+            function ajaxRequest(url) {
+                    // Envoie une requête AJAX de type GET à l'URL construite
+                $.ajax({
+                    // L'URL de la requête
+                    url: url,
+                    // Le type de requête (ici, GET)
+                    type: 'GET',
+                    // Fonction appelée en cas de succès de la requête
+                    success: function(response) {
+                        const newResponse = JSON.parse(response)
+                        if (parseInt(newResponse.status) === 200){
+                            console.log(newResponse.status)
+                            $("#shippingCost").text(newResponse.content)
+                        }
+                    },
+                    // Fonction appelée en cas d'erreur de la requête
+                    error: function(xhr, status, error) {
+                    // À remplacer par le code à exécuter en cas d'erreur
                     }
-                },
-                // Fonction appelée en cas d'erreur de la requête
-                error: function(xhr, status, error) {
-                // À remplacer par le code à exécuter en cas d'erreur
-                }
-            })
+                })
+            }
+
+            ajaxRequest(url)
+
+            
             citySelector.on('change',function() {
-                alert('hello world')
+                const urlUpdate = `http://localhost:8000/city/${$(this).val()}/shipping/cost`;
+                //alert(urlUpdate)
+                ajaxRequest(urlUpdate)
             })
         })
     </script>
