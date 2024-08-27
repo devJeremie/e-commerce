@@ -6,6 +6,7 @@ use App\Entity\City;
 use App\Entity\Order;
 use App\Form\OrderType;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,7 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class OrderController extends AbstractController
 {
     #[Route('/order', name: 'app_order')]
-    public function index(Request $request, SessionInterface $session, ProductRepository $productRepository): Response
+    public function index(Request $request, SessionInterface $session, 
+                          ProductRepository $productRepository, EntityManagerInterface $entityManager): Response
     {
 
          // Récupère les données du panier en session, ou un tableau vide si il n'y a rien
@@ -40,6 +42,12 @@ class OrderController extends AbstractController
         $order = new Order();
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if($order->isPayOnDelivery()) {
+
+            }
+        }
 
         return $this->render('order/index.html.twig', [
             'form'=>$form->createView(),
