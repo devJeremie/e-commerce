@@ -44,6 +44,7 @@ class OrderType extends AbstractType
                         'class'=>'form form-control'
                     ]
             ])
+            ->add('payOnDelivery')
         ;
     }
 

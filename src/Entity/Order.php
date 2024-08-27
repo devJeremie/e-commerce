@@ -32,6 +32,9 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?City $city = null;
 
+    #[ORM\Column]
+    private ?bool $payOnDelivery = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +110,18 @@ class Order
     public function setCity(?City $city): static
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function isPayOnDelivery(): ?bool
+    {
+        return $this->payOnDelivery;
+    }
+
+    public function setPayOnDelivery(bool $payOnDelivery): static
+    {
+        $this->payOnDelivery = $payOnDelivery;
 
         return $this;
     }
