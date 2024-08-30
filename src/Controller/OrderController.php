@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\Order;
+use App\Service\Cart;
 use App\Form\OrderType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +18,9 @@ class OrderController extends AbstractController
 {
     #[Route('/order', name: 'app_order')]
     public function index(Request $request, SessionInterface $session, 
-                          ProductRepository $productRepository, EntityManagerInterface $entityManager): Response
+                          ProductRepository $productRepository, 
+                          EntityManagerInterface $entityManager,
+                          Cart $cart): Response
     {
 
          // Récupère les données du panier en session, ou un tableau vide si il n'y a rien
