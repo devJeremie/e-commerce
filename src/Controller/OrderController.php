@@ -23,24 +23,26 @@ class OrderController extends AbstractController
                           Cart $cart): Response
     {
 
-         // Récupère les données du panier en session, ou un tableau vide si il n'y a rien
-         $cart = $session->get('cart', []);
-         // Initialisation d'un tableau pour stocker les données du panier avec les informations de produit
-         $cartWithData = [];
-         // Boucle sur les éléments du panier pour récupérer les informations de produit
-         foreach ($cart as $id => $quantity) {
-             // Récupère le produit correspondant à l'id et la quantité
-             $cartWithData[] = [
-                 'product' => $productRepository->find($id), // Récupère le produit via son id
-                 'quantity' => $quantity // Quantité du produit dans le panier
-             ];
-         }
+        //  // Récupère les données du panier en session, ou un tableau vide si il n'y a rien
+        //  $cart = $session->get('cart', []);
+        //  // Initialisation d'un tableau pour stocker les données du panier avec les informations de produit
+        //  $cartWithData = [];
+        //  // Boucle sur les éléments du panier pour récupérer les informations de produit
+        //  foreach ($cart as $id => $quantity) {
+        //      // Récupère le produit correspondant à l'id et la quantité
+        //      $cartWithData[] = [
+        //          'product' => $productRepository->find($id), // Récupère le produit via son id
+        //          'quantity' => $quantity // Quantité du produit dans le panier
+        //      ];
+        //  }
  
-         // Calcul du total du panier
-         $total = array_sum(array_map(function ($item) {
-             // Pour chaque élément du panier, multiplie le prix du produit par la quantité
-             return $item['product']->getPrice() * $item['quantity'];
-         }, $cartWithData));
+        //  // Calcul du total du panier
+        //  $total = array_sum(array_map(function ($item) {
+        //      // Pour chaque élément du panier, multiplie le prix du produit par la quantité
+        //      return $item['product']->getPrice() * $item['quantity'];
+        //  }, $cartWithData));
+
+        $data = $cart->getCart($session);
 
         $order = new Order();
         $form = $this->createForm(OrderType::class, $order);
@@ -48,13 +50,17 @@ class OrderController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if($order->isPayOnDelivery()) {
-
+                //dd($order);
+                $order->setTotalPrice($data['total']);
+                $order->setCreatedAt(new \DateTimeImmutable());
+                $entityManager->persist($order);
+                $entityManager->flush();
             }
         }
 
         return $this->render('order/index.html.twig', [
             'form'=>$form->createView(),
-            'total'=>$total,
+            'total'=>$data['total'],
         ]);
     }
 
