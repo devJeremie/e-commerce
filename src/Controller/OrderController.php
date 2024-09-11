@@ -20,7 +20,8 @@ class OrderController extends AbstractController
     public function index(Request $request, SessionInterface $session, 
                           ProductRepository $productRepository, 
                           EntityManagerInterface $entityManager,
-                          Cart $cart): Response
+                          Cart $cart
+    ): Response
     {
 
         //  // Récupère les données du panier en session, ou un tableau vide si il n'y a rien
@@ -49,13 +50,21 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             if($order->isPayOnDelivery()) {
-                //dd($order);
+               
                 $order->setTotalPrice($data['total']);
                 $order->setCreatedAt(new \DateTimeImmutable());
+                //dd($order);
                 $entityManager->persist($order);
                 $entityManager->flush();
             }
+            $order->setTotalPrice($data['total']);
+            $order->setCreatedAt(new \DateTimeImmutable());
+                //dd($order);
+            $entityManager->persist($order);
+            $entityManager->flush();
+
         }
 
         return $this->render('order/index.html.twig', [
