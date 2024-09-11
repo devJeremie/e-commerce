@@ -56,26 +56,26 @@ class CartController extends AbstractController
     }
 
     #[Route("/cart/remove/{id}/", name: "app_cart_product_remove", methods: ['GET'])]
-    public function removeToCart($id, SessionInterface $sessionInterface): Response
+    public function removeToCart($id, SessionInterface $session): Response
     {
          // Récupération du contenu du panier en session, ou initialisation à un tableau vide si il n'existe pas
-        $cart = $sessionInterface->get('cart', []);
+        $cart = $session->get('cart', []);
         // Vérification si le produit à supprimer existe dans le panier
         if (!empty($cart[$id])) {
             // Suppression du produit du panier
             unset($cart[$id]);
         }
         // Mise à jour du contenu du panier en session
-        $sessionInterface->set('cart', $cart);
+        $session->set('cart', $cart);
         // Redirection vers la page du panier
         return $this->redirectToRoute('app_cart');
     }
 
     #[Route("/cart/remove", name: "app_cart_remove", methods: ['GET'])]
-    public function remove(SessionInterface $sessionInterface): Response
+    public function remove(SessionInterface $session): Response
     {
         // Mise à jour du contenu du panier en session
-        $sessionInterface->set('cart', []);
+        $session->set('cart', []);
         // Redirection vers la page du panier
         return $this->redirectToRoute('app_cart');
     }

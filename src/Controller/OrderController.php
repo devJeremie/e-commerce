@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\Order;
+use App\Entity\OrderProducts;
 use App\Service\Cart;
 use App\Form\OrderType;
 use App\Repository\ProductRepository;
@@ -52,18 +53,34 @@ class OrderController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             
             if($order->isPayOnDelivery()) {
+
+                if(!empty($data['total'])) {
+                    $order->setTotalPrice($data['total']);
+                    $order->setCreatedAt(new \DateTimeImmutable());
+                    //dd($order);
+                    $entityManager->persist($order);
+                    $entityManager->flush();
+
+                    foreach($data['cart'] as $value) {
+                        $orderProduct = new OrderProducts();
+                        $orderProduct->setOrder($order);
+                        $orderProduct->setProduct($value['product']);
+                        $orderProduct->setQuantity($value['quantity']);
+                        $entityManager->persist($orderProduct);
+                        $entityManager->flush();
+                    }
+                }
                
-                $order->setTotalPrice($data['total']);
-                $order->setCreatedAt(new \DateTimeImmutable());
-                //dd($order);
-                $entityManager->persist($order);
-                $entityManager->flush();
+                // Mise à jour du contenu du panier en session
+                $session->set('cart', []);
+                // Redirection vers la page du panier
+                return $this->redirectToRoute('app_order_message');
             }
-            $order->setTotalPrice($data['total']);
-            $order->setCreatedAt(new \DateTimeImmutable());
-                //dd($order);
-            $entityManager->persist($order);
-            $entityManager->flush();
+            // $order->setTotalPrice($data['total']);
+            // $order->setCreatedAt(new \DateTimeImmutable());
+            //     //dd($order);
+            // $entityManager->persist($order);
+            // $entityManager->flush();
 
         }
 
@@ -71,6 +88,12 @@ class OrderController extends AbstractController
             'form'=>$form->createView(),
             'total'=>$data['total'],
         ]);
+    }
+
+    #[Route('/order_message', name: 'app_order_message')]
+    public function orderMessage():Response
+    {
+        return $this->render('order/order_message.html.twig');
     }
 
     #[Route('/city/{id}/shipping/cost', name: 'app_city_shipping_cost')]
