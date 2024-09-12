@@ -7,6 +7,7 @@ use App\Entity\Order;
 use App\Entity\OrderProducts;
 use App\Service\Cart;
 use App\Form\OrderType;
+use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,6 +88,16 @@ class OrderController extends AbstractController
         return $this->render('order/index.html.twig', [
             'form'=>$form->createView(),
             'total'=>$data['total'],
+        ]);
+    }
+
+    #[Route('/editor/order', name: 'app_orders_show')]
+    public function getAllOrder(OrderRepository $orderRepository):Response
+    {
+        $orders = $orderRepository->findAll();
+        //dd($orders);
+        return $this->render('order/order.html.twig', [
+            "orders"=>$orders
         ]);
     }
 
