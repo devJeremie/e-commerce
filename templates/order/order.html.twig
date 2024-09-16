@@ -3,10 +3,17 @@
 {% block body %}
 <div class='container'>
     <h1 class="mt-5 mb-5 text-center">Commandes</h1>
+        {{ include ('layouts/_flash_message.html.twig') }} 
     {% for order in orders %}
         <h2>Commande n° {{ order.id }}</h2>
+        {% if order.isCompleted ==true %}
+            <span class='text-success'>Commande livrée : {{ order.createdAt|date }}</span>
+        {% else %}
+            <span class='text-danger'>Commande non livrée : {{ order.createdAt|date }}</span>
+        {% endif %}
+        <br>
         <span class='text-primary'>Informations du client</span>
-         <table class="table table-bordered">
+        <table class="table table-bordered">
         <tr>
             <th>Nom</th>
             <th>Prénom</th>
@@ -47,7 +54,9 @@
     </table>
     <span>Frais de livraisons : {{ order.city.shippingCost }} €</span>
     <h5 class='mb-5'>Total à payer : {{ order.totalPrice }} €</h5>
-    <a href="" class='btn btn-outline-primary col-2 m-lg-1'>Marquer comme livrée</a>
+    {% if order.isCompleted != true %}
+        <a href="{{ path('app_orders_is-completed-update',{'id':order.id}) }}" class='btn btn-outline-primary col-2 m-lg-1'>Marquer comme livrée</a>
+    {% endif %}
     <a href="" class='btn btn-outline-danger col-2 m-lg-1'>Supprimer la commande</a>
     <hr>
     {% endfor %}

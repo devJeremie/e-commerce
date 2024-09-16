@@ -9,6 +9,7 @@ use App\Service\Cart;
 use App\Form\OrderType;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -108,6 +109,16 @@ class OrderController extends AbstractController
         return $this->render('order/order.html.twig', [
             "orders"=>$orders
         ]);
+    }
+
+    #[Route('/editor/order/{id}/is-completed/update', name: 'app_orders_is-completed-update')]
+    public function isCompletedUpdate($id, OrderRepository $orderRepository, EntityManagerInterface $entityManager):Response
+    {
+        $order = $orderRepository->find($id);
+        $order->setIsCompleted(true);
+        $entityManager->flush();
+        $this->addFlash('success', 'Modification effectuée');
+        return $this->redirectToRoute('app_orders_show');
     }
 
     #[Route('/order_message', name: 'app_order_message')]
