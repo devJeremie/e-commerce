@@ -121,6 +121,15 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('app_orders_show');
     }
 
+    #[Route('/editor/order/{id}/remove', name: 'app_orders_remove')]
+    public function removeOrder(Order $order, EntityManagerInterface $entityManager):Response 
+    {
+        $entityManager->remove($order);
+        $entityManager->flush();
+        $this->addFlash('danger', 'Commande supprimée');
+        return $this->redirectToRoute('app_orders_show');
+    }
+
     #[Route('/order_message', name: 'app_order_message')]
     public function orderMessage():Response
     {
