@@ -1,25 +1,21 @@
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %} #}
 
-{% block title %}Factures{% endblock %}
+{# {% block title %}Factures{% endblock %} #}
 
 {% block body %}
     <div class="container">
-        <h2>Commande n° {{ order.id }}</h2>
-        {% if order.isCompleted ==true %}
-            <span class='text-success'>Commande livrée : {{ order.createdAt|date }}</span>
-        {% else %}
-            <span class='text-danger'>Commande non livrée : {{ order.createdAt|date }}</span>
-        {% endif %}
-        <br>
-        <span class='text-primary'>Informations du client</span>
+        <h2>Facture n° {{ order.id }}</h2>
+        <hr>
+        <span>Date de la commande : {{ order.createdAt|date }}</span>
+        <h5 class='text-primary mt-5'>Informations du client</h5>
         <table class="table table-bordered">
-        <tr>
+        <thead>
             <th>Nom</th>
             <th>Prénom</th>
             <th>Téléphone</th>
             <th>Adresse</th>
             <th>Ville</th>
-        </tr>
+        </thead>
         <tr>
             <td>{{ order.firstName }} </td>
             <td>{{ order.lastName }} </td>
@@ -30,19 +26,15 @@
         </table>
         <span class='text-primary'>Corps de la commande</span>
         <table class="table table-bordered">
-            <tr>
-                <th>Image du produit</th>
+            <thead>
                 <th>Nom du produit</th>
                 <th>Description du produit</th>
                 <th>Prix du produit</th>
                 <th>Quantité</th>
                 <th>Prix total</th>
-            </tr>
+            </thead>
             {% for product in order.orderProducts %}
                 <tr>
-                    <td>
-                        <img style="width: 80px" src="{{ asset('uploads/images/'~product.product.image)}}">
-                    </td>
                     <td>{{ product.product.name }}</td>
                     <td>{{ product.product.description|slice(0,100)}}</td>
                     <td>{{ product.product.price}} €</td>
@@ -51,7 +43,28 @@
                 </tr>
             {% endfor %}
         </table>
+        <br><br><br>
         <span>Frais de livraisons : {{ order.city.shippingCost }} €</span>
+        <hr>
         <h5 class='mb-5'>Total à payer : {{ order.totalPrice }} €</h5>
     </div>
 {% endblock %}
+
+<style>
+    table{
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td{
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    thead{
+        background: #f2f2f2;
+    }
+    tbody tr:nth-child(odd){
+        background: #f9f9f9
+    }
+
+</style>

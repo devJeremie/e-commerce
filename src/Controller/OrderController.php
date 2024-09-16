@@ -47,28 +47,38 @@ class OrderController extends AbstractController
         //      return $item['product']->getPrice() * $item['quantity'];
         //  }, $cartWithData));
 
+        // Récupère les données du panier à partir de la session using le service Cart
         $data = $cart->getCart($session);
-
+        // Crée un nouvel objet Order
         $order = new Order();
+        // Crée un formulaire pour gérer la création de la commande using le type de formulaire OrderType
         $form = $this->createForm(OrderType::class, $order);
+        // Gère la soumission du formulaire
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            // Vérifie si la commande est une commande à payer à la livraison
             if($order->isPayOnDelivery()) {
-
+                // Vérifie si le total du panier n'est pas vide
                 if(!empty($data['total'])) {
+                    // Définit le prix total de la commande
                     $order->setTotalPrice($data['total']);
+                    // Définit la date de création de la commande
                     $order->setCreatedAt(new \DateTimeImmutable());
                     //dd($order);
                     $entityManager->persist($order);
                     $entityManager->flush();
-
+                    // Boucle sur chaque élément du panier
                     foreach($data['cart'] as $value) {
+                        // Crée un nouvel objet OrderProducts
                         $orderProduct = new OrderProducts();
+                        // Définit la commande pour le produit de la commande
                         $orderProduct->setOrder($order);
+                        // Définit le produit pour le produit de la commande
                         $orderProduct->setProduct($value['product']);
+                        // Définit la quantité pour le produit de la commande
                         $orderProduct->setQuantity($value['quantity']);
+                        // Enregistre le produit de la commande dans la base de données
                         $entityManager->persist($orderProduct);
                         $entityManager->flush();
                     }
