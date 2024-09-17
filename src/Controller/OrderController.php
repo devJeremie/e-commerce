@@ -4,15 +4,17 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\Order;
-use App\Entity\OrderProducts;
 use App\Service\Cart;
 use App\Form\OrderType;
+use App\Entity\OrderProducts;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\Mime\Email;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -20,6 +22,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class OrderController extends AbstractController
 {
+    public function __construct(private MailerInterface $mailer){
+    }
+
+    
     #[Route('/order', name: 'app_order')]
     public function index(Request $request, SessionInterface $session, 
                           ProductRepository $productRepository, 
@@ -86,6 +92,17 @@ class OrderController extends AbstractController
                
                 // Mise à jour du contenu du panier en session
                 $session->set('cart', []);
+
+                $html = $this->renderView('mail/orderConfirm.html.twig',[ //crée une vue mail
+                    'order'=>$order //on recupere le $order apres le flush donc on a toutes les infos
+                ]);
+                $email = (new Email()) //On importe la classe depuis Symfony\Component\Mime\Email;
+                ->from('sneakhub@gmailcom') //Adresse de l'expéditeur donc notre boutique ou vous mêmes
+                ->to('to@gmailcom') //Adresse du receveur
+                ->subject('Confirmation de réception de commande') //Intitulé du mail
+                ->html($html);
+                $this->mailer->send($email);
+
                 // Redirection vers la page du panier
                 return $this->redirectToRoute('app_order_message');
             }

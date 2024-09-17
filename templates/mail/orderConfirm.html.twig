@@ -1,0 +1,19 @@
+{# {% extends 'base.html.twig' %} #}
+
+{# {% block title %}Factures{% endblock %} #}
+
+{% block body %}
+    <div class="container">
+    <!--Possible de mettre le logo de l'entreprise ici en html-->
+    <h1>Confirmation de commande</h1>
+    <p>Merci pour votre commande elle sera traité dans les plus brefs délais</p>
+        <span class='text-primary'>Détail de la commande</span>
+
+        <br><br><br>
+        <span>Frais de livraisons : {{ order.city.shippingCost }} €</span>
+        <hr>
+        <h5 class='mb-5'>Total à payer : {{ order.totalPrice }} €</h5>
+    </div>
+{% endblock %}
+
+

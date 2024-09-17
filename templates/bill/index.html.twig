@@ -11,11 +11,13 @@
         <h5 class='text-primary mt-5'>Informations du client</h5>
         <table class="table table-bordered">
         <thead>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Téléphone</th>
-            <th>Adresse</th>
-            <th>Ville</th>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Téléphone</th>
+                <th>Adresse</th>
+                <th>Ville</th>
+            </tr>
         </thead>
         <tr>
             <td>{{ order.firstName }} </td>
@@ -28,11 +30,13 @@
         <span class='text-primary'>Corps de la commande</span>
         <table class="table table-bordered">
             <thead>
-                <th>Nom du produit</th>
-                <th>Description du produit</th>
-                <th>Prix du produit</th>
-                <th>Quantité</th>
-                <th>Prix total</th>
+                <tr>
+                    <th>Nom du produit</th>
+                    <th>Description du produit</th>
+                    <th>Prix du produit</th>
+                    <th>Quantité</th>
+                    <th>Prix total</th>
+                </tr>
             </thead>
             {% for product in order.orderProducts %}
                 <tr>
