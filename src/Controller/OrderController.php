@@ -98,7 +98,8 @@ class OrderController extends AbstractController
                 ]);
                 $email = (new Email()) //On importe la classe depuis Symfony\Component\Mime\Email;
                 ->from('sneakhub@gmailcom') //Adresse de l'expéditeur donc notre boutique ou vous mêmes
-                ->to('to@gmailcom') //Adresse du receveur
+                //->to('to@gmailcom') //Adresse du receveur
+                ->to($order->getEmail())
                 ->subject('Confirmation de réception de commande') //Intitulé du mail
                 ->html($html);
                 $this->mailer->send($email);
