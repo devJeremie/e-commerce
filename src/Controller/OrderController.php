@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Order;
 use App\Service\Cart;
+use App\Service\StripePayment;
 use App\Form\OrderType;
 use App\Entity\OrderProducts;
 use Doctrine\ORM\EntityManager;
@@ -108,12 +109,13 @@ class OrderController extends AbstractController
                 // Redirection vers la page du panier
                 return $this->redirectToRoute('app_order_message');
             }
-            // $order->setTotalPrice($data['total']);
-            // $order->setCreatedAt(new \DateTimeImmutable());
-            //     //dd($order);
-            // $entityManager->persist($order);
-            // $entityManager->flush();
-            
+          
+            $paymentStripe = new StripePayment(); //on importe notre service avec sa classe
+            $paymentStripe->startPayment($data); //on importe le panier donc $data
+            $stripeRedirectUrl = $paymentStripe->getStripeRedirectUrl();
+
+            return $this->redirect($stripeRedirectUrl);
+
         }
 
         return $this->render('order/index.html.twig', [

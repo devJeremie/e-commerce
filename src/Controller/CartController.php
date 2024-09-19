@@ -25,6 +25,14 @@ class CartController extends AbstractController
     {
        
         $data = $cart->getCart($session);
+        $cartProducts = $data['cart']; //on recupere les data et donc le panier
+        // $product = []; //on crée une variable qui va recupere nos produits du panier
+        // foreach ($cartProducts as $value) {
+        //     $product[] = $this->productRepository->findOneBy(
+        //         ['id' => $value['id']]
+        //     ); //on boucle sur les produits du panier et on les recupere
+        // }
+
 
         // Rendu de la vue pour afficher le panier
         return $this->render('cart/index.html.twig', [
