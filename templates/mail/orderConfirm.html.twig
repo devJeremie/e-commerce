@@ -5,9 +5,48 @@
 {% block body %}
     <div class="container">
     <!--Possible de mettre le logo de l'entreprise ici en html-->
-    <h1>Confirmation de commande</h1>
+    <h1>Confirmation de commande n°{{ order.id }}</h1>
+    <span>Date: {{ order.createdAt|date }}</span>
     <p>Merci pour votre commande elle sera traité dans les plus brefs délais</p>
         <span class='text-primary'>Détail de la commande</span>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Téléphone</th>
+                <th>Adresse</th>
+                <th>Ville</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>{{ order.firstName }} </td>
+            <td>{{ order.lastName }} </td>
+            <td>{{ order.phone }} </td>
+            <td>{{ order.adress }} </td>
+            <td>{{ order.city.name}} </td>
+        </tr>
+        </table>
+        <span class='text-primary'>Corps de la commande</span>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nom du produit</th>
+                    <th>Description du produit</th>
+                    <th>Prix du produit</th>
+                    <th>Quantité</th>
+                    <th>Prix total</th>
+                </tr>
+            </thead>
+            {% for product in order.orderProducts %}
+                <tr>
+                    <td>{{ product.product.name }}</td>
+                    <td>{{ product.product.description|slice(0,100)}}</td>
+                    <td>{{ product.product.price}} €</td>
+                    <td>{{ product.quantity}}</td>
+                    <td>{{ product.product.price*product.quantity}} €</td>
+                </tr>
+            {% endfor %}
+        </table>
 
         <br><br><br>
         <span>Frais de livraisons : {{ order.city.shippingCost }} €</span>

@@ -30,7 +30,7 @@ class OrderController extends AbstractController
     public function index(Request $request, SessionInterface $session, 
                           ProductRepository $productRepository, 
                           EntityManagerInterface $entityManager,
-                          Cart $cart
+                          Cart $cart,
     ): Response
     {
 
@@ -95,6 +95,7 @@ class OrderController extends AbstractController
 
                 $html = $this->renderView('mail/orderConfirm.html.twig',[ //crée une vue mail
                     'order'=>$order //on recupere le $order apres le flush donc on a toutes les infos
+                    
                 ]);
                 $email = (new Email()) //On importe la classe depuis Symfony\Component\Mime\Email;
                 ->from('sneakhub@gmailcom') //Adresse de l'expéditeur donc notre boutique ou vous mêmes
@@ -112,7 +113,7 @@ class OrderController extends AbstractController
             //     //dd($order);
             // $entityManager->persist($order);
             // $entityManager->flush();
-
+            
         }
 
         return $this->render('order/index.html.twig', [
