@@ -25,7 +25,7 @@ class CartController extends AbstractController
     {
        
         $data = $cart->getCart($session);
-        $cartProducts = $data['cart']; //on recupere les data et donc le panier
+        // $cartProducts = $data['cart']; //on recupere les data et donc le panier
         // $product = []; //on crée une variable qui va recupere nos produits du panier
         // foreach ($cartProducts as $value) {
         //     $product[] = $this->productRepository->findOneBy(

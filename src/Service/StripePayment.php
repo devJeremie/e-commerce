@@ -15,19 +15,35 @@ class StripePayment
         Stripe::setApiVersion('2024-06-20'); //on gère la version de Stripe
     }
 
-    public function startPayment($cart){
+    public function startPayment($cart, $shippingCost){
         //dd($cart);
-        $products = [];
-        foreach ($cart as $value) {
+       // Récupération des produits du panier
+        $cartProducts = $cart['cart']; 
+        // Initialisation d'un tableau vide pour stocker les produits formatés
+        $products = [
+            [
+                'qte' => 1, 
+                'price' => $shippingCost,
+                'name' => "Frais de livraison"
+            ]
+        ];
+
+        // Boucle pour parcourir chaque produit du panier
+        foreach ($cartProducts as $value) {
+            // Initialisation d'un tableau vide pour stocker les informations d'un produit
             $productItem = [];
+            // Récupération du nom du produit
             $productItem['name'] = $value['product']->getName();
+            // Récupération du prix du produit
             $productItem['price'] = $value['product']->getPrice();
+            // Récupération de la quantité du produit
             $productItem['qte'] = $value['quantity'];
-            $products = $productItem;
+            // Ajout du produit formaté au tableau des produits
+            $products[] = $productItem;
         }
 
         $session = Session::create([ //création de la session Stripe
-            'line_items'=>[  //produit qui vont etre payer
+            'line_items'=>[  //produits qui vont etre payer
                 array_map(fn(array $product) => [
                     'quantity' => $product['qte'],
                     'price_data' => [
@@ -35,7 +51,7 @@ class StripePayment
                         'product_data' => [
                            'name' => $product['name']
                         ],
-                        'unit_amount' => $product['price'],
+                        'unit_amount' => $product['price']*100, //prix donnée en centimes donc on multiplie
                     ],
                 ],$products)
             ],
@@ -51,7 +67,7 @@ class StripePayment
             ]
         ]); 
 
-        $this->redirectUrl = $session->url;
+        $this->redirectUrl = $session->url; //redirection vers stripe pour le paiement
 
     }
     public function getStripeRedirectUrl(){ //permet de recuperer l'url de l'utilisateur pour stripe
