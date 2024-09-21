@@ -46,16 +46,18 @@ class StripeController extends AbstractController
             return new Response('Invalid signature', 400);
         }
         switch($event->type){
-            case 'payment_intent.succeeded':
+            case 'payment_intent.succeeded':  // contient l'objet payment_intent
                 $paymentIntent = $event->data->object;
                 $fileName = 'stripe-detail-'.uniqid().'txt';
                 file_put_contents($fileName, $paymentIntent);
                 break;
-            case 'payment_method.attached':
-                $paymentMethod = $event->data->object;
+            case 'payment_method.attached':   // contient l'objet payment_method
+                $paymentMethod = $event->data->object; 
                 break;
             default :
                 break;
         }
+
+        return new Response('Evènement recu avec succés', 200);
     }
 }
