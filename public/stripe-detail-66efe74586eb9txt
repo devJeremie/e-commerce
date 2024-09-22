@@ -1,0 +1,66 @@
+Stripe\PaymentIntent JSON: {
+    "id": "pi_3Q1mMJ04Ha88nC6n0gMS6jZu",
+    "object": "payment_intent",
+    "amount": 39760,
+    "amount_capturable": 0,
+    "amount_details": {
+        "tip": []
+    },
+    "amount_received": 39760,
+    "application": null,
+    "application_fee_amount": null,
+    "automatic_payment_methods": null,
+    "canceled_at": null,
+    "cancellation_reason": null,
+    "capture_method": "automatic_async",
+    "client_secret": "pi_3Q1mMJ04Ha88nC6n0gMS6jZu_secret_crvu2TNSTI2Qxl5hTBU2vRQ0R",
+    "confirmation_method": "automatic",
+    "created": 1726998339,
+    "currency": "eur",
+    "customer": null,
+    "description": null,
+    "invoice": null,
+    "last_payment_error": null,
+    "latest_charge": "ch_3Q1mMJ04Ha88nC6n0KlXoAOj",
+    "livemode": false,
+    "metadata": [],
+    "next_action": null,
+    "on_behalf_of": null,
+    "payment_method": "pm_1Q1mMC04Ha88nC6nBaHZU9IP",
+    "payment_method_configuration_details": null,
+    "payment_method_options": {
+        "card": {
+            "installments": null,
+            "mandate_options": null,
+            "network": null,
+            "request_three_d_secure": "automatic"
+        }
+    },
+    "payment_method_types": [
+        "card"
+    ],
+    "processing": null,
+    "receipt_email": null,
+    "review": null,
+    "setup_future_usage": null,
+    "shipping": {
+        "address": {
+            "city": "Boigny-sur-Bionne",
+            "country": "FR",
+            "line1": "8 Rue de la Commanderie",
+            "line2": null,
+            "postal_code": "45760",
+            "state": null
+        },
+        "carrier": null,
+        "name": "chabanais jeremie",
+        "phone": null,
+        "tracking_number": null
+    },
+    "source": null,
+    "statement_descriptor": null,
+    "statement_descriptor_suffix": null,
+    "status": "succeeded",
+    "transfer_data": null,
+    "transfer_group": null
+}
