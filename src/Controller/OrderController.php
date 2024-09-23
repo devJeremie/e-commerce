@@ -35,25 +35,6 @@ class OrderController extends AbstractController
     ): Response
     {
 
-        //  // Récupère les données du panier en session, ou un tableau vide si il n'y a rien
-        //  $cart = $session->get('cart', []);
-        //  // Initialisation d'un tableau pour stocker les données du panier avec les informations de produit
-        //  $cartWithData = [];
-        //  // Boucle sur les éléments du panier pour récupérer les informations de produit
-        //  foreach ($cart as $id => $quantity) {
-        //      // Récupère le produit correspondant à l'id et la quantité
-        //      $cartWithData[] = [
-        //          'product' => $productRepository->find($id), // Récupère le produit via son id
-        //          'quantity' => $quantity // Quantité du produit dans le panier
-        //      ];
-        //  }
- 
-        //  // Calcul du total du panier
-        //  $total = array_sum(array_map(function ($item) {
-        //      // Pour chaque élément du panier, multiplie le prix du produit par la quantité
-        //      return $item['product']->getPrice() * $item['quantity'];
-        //  }, $cartWithData));
-
         // Récupère les données du panier à partir de la session using le service Cart
         $data = $cart->getCart($session);
         // Crée un nouvel objet Order
@@ -63,15 +44,15 @@ class OrderController extends AbstractController
         // Gère la soumission du formulaire
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Vérifie si la commande est une commande à payer à la livraison
-            if($order->isPayOnDelivery()) {
+        //quand c'est true
+        if ($form->isSubmitted() && $form->isValid()) {  
                 // Vérifie si le total du panier n'est pas vide
                 if(!empty($data['total'])) {
                     // Définit le prix total de la commande
                     $order->setTotalPrice($data['total']);
                     // Définit la date de création de la commande
                     $order->setCreatedAt(new \DateTimeImmutable());
+                    $order->setPaymentCompleted(0); //on initialise a false 
                     //dd($order);
                     $entityManager->persist($order);
                     $entityManager->flush();
@@ -89,42 +70,45 @@ class OrderController extends AbstractController
                         $entityManager->persist($orderProduct);
                         $entityManager->flush();
                     }
+
+                    if($order->isPayOnDelivery()) {
+                        // Mise à jour du contenu du panier en session
+                        $session->set('cart', []);
+
+                        $html = $this->renderView('mail/orderConfirm.html.twig',[ //crée une vue mail
+                            'order'=>$order //on recupere le $order apres le flush donc on a toutes les infos
+                            
+                        ]);
+                        $email = (new Email()) //On importe la classe depuis Symfony\Component\Mime\Email;
+                        ->from('sneakhub@gmailcom') //Adresse de l'expéditeur donc notre boutique ou vous mêmes
+                        //->to('to@gmailcom') //Adresse du receveur
+                        ->to($order->getEmail())
+                        ->subject('Confirmation de réception de commande') //Intitulé du mail
+                        ->html($html);
+                        $this->mailer->send($email);
+        
+                        // Redirection vers la page du panier
+                        return $this->redirectToRoute('app_order_message');
+                    }
+                    // quand c'est false
+                    $paymentStripe = new StripePayment(); //on importe notre service avec sa classe
+                    $shippingCost = $order->getCity()->getShippingCost();
+                    $paymentStripe->startPayment($data, $shippingCost, $order->getId()); //on importe le panier donc $data
+                    $stripeRedirectUrl = $paymentStripe->getStripeRedirectUrl();
+                    //dd( $stripeRedirectUrl);
+                    return $this->redirect($stripeRedirectUrl);
                 }
-               
-                // Mise à jour du contenu du panier en session
-                $session->set('cart', []);
-
-                $html = $this->renderView('mail/orderConfirm.html.twig',[ //crée une vue mail
-                    'order'=>$order //on recupere le $order apres le flush donc on a toutes les infos
-                    
-                ]);
-                $email = (new Email()) //On importe la classe depuis Symfony\Component\Mime\Email;
-                ->from('sneakhub@gmailcom') //Adresse de l'expéditeur donc notre boutique ou vous mêmes
-                //->to('to@gmailcom') //Adresse du receveur
-                ->to($order->getEmail())
-                ->subject('Confirmation de réception de commande') //Intitulé du mail
-                ->html($html);
-                $this->mailer->send($email);
-
-                // Redirection vers la page du panier
-                return $this->redirectToRoute('app_order_message');
             }
-          
-            $paymentStripe = new StripePayment(); //on importe notre service avec sa classe
-            $shippingCost = $order->getCity()->getShippingCost();
-            $paymentStripe->startPayment($data, $shippingCost); //on importe le panier donc $data
-            $stripeRedirectUrl = $paymentStripe->getStripeRedirectUrl();
-            //dd( $stripeRedirectUrl);
-
-            return $this->redirect($stripeRedirectUrl);
+            
+            return $this->render('order/index.html.twig', [
+                'form'=>$form->createView(),
+                'total'=>$data['total'],
+            ]);
 
         }
 
-        return $this->render('order/index.html.twig', [
-            'form'=>$form->createView(),
-            'total'=>$data['total'],
-        ]);
-    }
+       
+    
 
     #[Route('/editor/order', name: 'app_orders_show')]
     public function getAllOrder(OrderRepository $orderRepository, Request $request, PaginatorInterface $paginator):Response
