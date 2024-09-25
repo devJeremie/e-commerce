@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Repository\OrderRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Service\Cart;
 use Stripe\Stripe;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class StripeController extends AbstractController
 {
@@ -15,8 +19,9 @@ class StripeController extends AbstractController
      * 
      */
     #[Route('/pay/success', name: 'app_stripe_success')]
-    public function success(): Response
+    public function success(SessionInterface $session): Response
     {
+        $session->set('cart',[]);
         // Rendre la vue "index.html.twig" avec le nom du contrôleur
         return $this->render('stripe/index.html.twig', [
             'controller_name' => 'StripeController',
@@ -42,7 +47,10 @@ class StripeController extends AbstractController
      * 
      */
     #[Route('/stripe/notify', name: 'app_stripe_notify')]
-    public function stripeNotify(Request $request): Response
+    public function stripeNotify(Request $request, 
+                                OrderRepository $orderRepository,
+                                EntityManagerInterface $entityManager): Response
+
     {
         // Définir la clé secrète de Stripe à partir de la variable d'environnement
         Stripe::setApiKey($_SERVER['STRIPE_SECRET_KEY']);
@@ -76,9 +84,20 @@ class StripeController extends AbstractController
                 $paymentIntent = $event->data->object;
                 
                 // Enregistrer les détails du paiement dans un fichier
-                $fileName = 'stripe-detail-'.uniqid().'txt';
+                $fileName = 'stripe-detail-'.uniqid().'.txt';
+
                 $orderId = $paymentIntent->metadata->orderId;
-                file_put_contents($fileName, $orderId);
+                $order = $orderRepository->find($orderId);
+
+                $cartPrice = $order->getTotalPrice();
+                $stripeTotalAmount = $paymentIntent->amount/100;
+                if($cartPrice==$stripeTotalAmount){
+                    $order->setIsPaymentCompleted(1);
+                    $entityManager->flush();
+                }
+
+                
+                // file_put_contents($fileName, $orderId);
                 break;
             case 'payment_method.attached':   // Événement de méthode de paiement attachée
                 // Récupérer l'objet payment_method

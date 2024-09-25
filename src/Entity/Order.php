@@ -222,7 +222,7 @@ class Order
         return $this->isPaymentCompleted;
     }
 
-    public function setPaymentCompleted(bool $isPaymentCompleted): static
+    public function setIsPaymentCompleted(bool $isPaymentCompleted): static
     {
         $this->isPaymentCompleted = $isPaymentCompleted;
 
