@@ -57,6 +57,20 @@
             <a href="{{ path('app_login') }} " class='nav-link'>Se connecter</a>
           </li> 
         {% endif %}
+        <!--Menu des commandes-->
+        {% if is_granted("ROLE_EDITOR") %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Commandes
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ path('app_orders_show',{'type':'is-completed'}) }}">Commandes livrées</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_orders_show',{'type':'no_delivery'}) }}">Commandes non livrées</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_orders_show',{'type':'pay-on-stripe-not-delivered'}) }}">Commandes payées en ligne non livrées</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_orders_show',{'type':'pay-on-stripe-is-delivered'}) }}">Commandes payées en ligne livrées</a></li>
+            </ul>
+          </li> 
+        {% endif %}
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

@@ -111,17 +111,24 @@ class OrderController extends AbstractController
        
     
 
-    #[Route('/editor/order', name: 'app_orders_show')]
-    public function getAllOrder(OrderRepository $orderRepository, Request $request, PaginatorInterface $paginator):Response
+    #[Route('/editor/order/{type}/', name: 'app_orders_show')]
+    public function getAllOrder($type, OrderRepository $orderRepository, Request $request, PaginatorInterface $paginator):Response
     {
-        $data = $orderRepository->findBy([],['id'=>'DESC']);
+        if($type == 'is-completed'){
+            $data = $orderRepository->findBy(['isCompleted'=>1],['id'=>'DESC']);
+        }else if($type == 'pay-on-stripe-not-delivered'){
+            $data = $orderRepository->findBy(['isCompleted'=>null,'payOnDelivery'=>0,'isPaymentCompleted'=>1],['id'=>'DESC']);
+        }else if($type == 'pay-on-stripe-is-delivered'){
+            $data = $orderRepository->findBy(['isCompleted'=>1,'payOnDelivery'=>0,'isPaymentCompleted'=>1],['id'=>'DESC']);
+        }else if($type == 'no_delivery'){
+            $data = $orderRepository->findBy(['isCompleted'=>null,'payOnDelivery'=>0,'isPaymentCompleted'=>0],['id'=>'DESC']);
+        }
         //dd($orders);
 
         $orders = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1),//met en place la pagination
             6 //je choisi la limite de 6 commandes par page
-            //2
         );
 
         return $this->render('order/order.html.twig', [
@@ -130,13 +137,13 @@ class OrderController extends AbstractController
     }
 
     #[Route('/editor/order/{id}/is-completed/update', name: 'app_orders_is-completed-update')]
-    public function isCompletedUpdate($id, OrderRepository $orderRepository, EntityManagerInterface $entityManager):Response
+    public function isCompletedUpdate(Request $request, $id, OrderRepository $orderRepository, EntityManagerInterface $entityManager):Response
     {
         $order = $orderRepository->find($id);
         $order->setIsCompleted(true);
         $entityManager->flush();
         $this->addFlash('success', 'Modification effectuée');
-        return $this->redirectToRoute('app_orders_show');
+        return $this->redirect($request->headers->get('referer'));//cela fait reference a la route precedent cette route ci
     }
 
     #[Route('/editor/order/{id}/remove', name: 'app_orders_remove')]
@@ -145,7 +152,7 @@ class OrderController extends AbstractController
         $entityManager->remove($order);
         $entityManager->flush();
         $this->addFlash('danger', 'Commande supprimée');
-        return $this->redirectToRoute('app_orders_show');
+        return $this->redirectToRoute('app_orders_show',['type']);
     }
 
     #[Route('/order_message', name: 'app_order_message')]
@@ -161,4 +168,6 @@ class OrderController extends AbstractController
 
         return new Response(json_encode(['status'=>200, "message"=>'on', 'content'=> $cityShippingPrice]));
     }
+
+
 }
