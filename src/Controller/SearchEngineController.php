@@ -15,7 +15,7 @@ class SearchEngineController extends AbstractController
 
         if ($request->isMethod('POST')){
             $data = $request->request->all();
-            $search = $data['search'];
+            $word = $data['search'];
         }
 
         return $this->render('search_engine/index.html.twig', [
