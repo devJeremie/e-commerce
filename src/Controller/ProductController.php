@@ -172,6 +172,7 @@ class ProductController extends AbstractController
     #[Route('/add/product/{id}/stock/history', name: 'app_product_stock_add_history', methods: ['GET'])]
     public function showHistoryProductStock($id, ProductRepository $productRepository, AddProductHistoryRepository $addProductHistoryRepository):Response
     {
+
         $product = $productRepository->find($id);/*on recupere le produit passé en paramètre*/
         $productAddHistory = $addProductHistoryRepository->findBy(['product'=>$product],['id'=>'DESC']);
         
