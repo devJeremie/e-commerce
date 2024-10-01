@@ -6,6 +6,11 @@ use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+//find($id, $lockMode = null, $lockVersion = null)
+//findOneBy(array $criteria, array $orderBy = null)
+//findAll()
+//findOneBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+
 /**
  * @extends ServiceEntityRepository<Product>
  */
