@@ -72,7 +72,7 @@
           </li> 
         {% endif %}
       </ul>
-      <form method="post" action="{{ path('app_search_engine')}}" class="d-flex" role="search">
+      <form data-turbo='false' method="get" action="{{ path('app_search_engine')}}" class="d-flex" role="search">
         <input name="word" class="form-control me-2" type="search" placeholder="Rechercher un produit" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>

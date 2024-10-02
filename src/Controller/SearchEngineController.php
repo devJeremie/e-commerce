@@ -10,14 +10,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchEngineController extends AbstractController
 {
-    #[Route('/search/engine', name: 'app_search_engine', methods: ['POST'])]
+    #[Route('/search/engine', name: 'app_search_engine', methods: ['GET'])]
     public function index(Request $request, ProductRepository $productRepository): Response
     {
 
-         // Vérifie si la requête est de type POST
-         if ($request->isMethod('POST')){
+         // Vérifie si la requête est de type GET
+         if ($request->isMethod('GET')){
             // Récupère les données de la requête
-            $data = $request->request->all();
+            $data = $request->query->all();
             // Récupère le mot-clé de recherche
             $word = $data['word'];
             
@@ -28,6 +28,7 @@ class SearchEngineController extends AbstractController
         // Rendu de la vue search_engine/index.html.twig avec les résultats de recherche
         return $this->render('search_engine/index.html.twig', [
             'products' => $results,
+            'word' => $word,
         ]);
     }
 }
