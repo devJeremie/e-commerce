@@ -27,7 +27,8 @@ security:
                 lifetime: 604800
                 path: /
                 always_remember_me: true
-
+        csrf_protection:
+            enabled: true
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
