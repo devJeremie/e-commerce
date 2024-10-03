@@ -10,6 +10,7 @@
         {{ form_errors(registrationForm) }}
 
         {{ form_start(registrationForm) }}
+             {{ csrf_token('intention') }}
             {{ form_widget(registrationForm.email, {'attr':{'class':'form form-control mt-3',
                                                         'placeholder': "email"}}) }}
             

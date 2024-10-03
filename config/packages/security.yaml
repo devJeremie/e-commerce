@@ -17,6 +17,7 @@ security:
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\SecurityAuthenticator
+            entry_point: App\Security\SecurityAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -27,8 +28,14 @@ security:
                 lifetime: 604800
                 path: /
                 always_remember_me: true
-        csrf_protection:
-            enabled: true
+            form_login:
+                enable_csrf: true
+                csrf_parameter: '_csrf_token'
+                csrf_token_id: 'intention'
+                login_path: app_login
+                check_path: app_login
+                default_target_path: /
+            
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
