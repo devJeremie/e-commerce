@@ -44,6 +44,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
+    //pour les tests unitaires
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+    //fin de la function pour les tests
 
     public function getEmail(): ?string
     {
