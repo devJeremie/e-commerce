@@ -28,7 +28,7 @@ class ProductController extends AbstractController
             'products' => $productRepository->findAll(),
         ]);
     }
-
+#region Diego
     #[Route('/new', name: 'app_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
@@ -72,7 +72,8 @@ class ProductController extends AbstractController
             'form' => $form,
         ]);
     }
-
+#endregion 
+#region TEST2
     #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
     public function show(Product $product): Response
     {
@@ -105,7 +106,7 @@ class ProductController extends AbstractController
                 
             }
 
-
+#endregion
             $entityManager->flush();
 
             $this->addFlash('success','Votre produit a été modifié');

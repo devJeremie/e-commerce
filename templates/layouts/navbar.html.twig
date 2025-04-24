@@ -9,9 +9,6 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{ path('app_home') }} ">Home</a>
         </li>
-        {# <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li> #}
         {% if categories is defined %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,6 +45,9 @@
                   <li><a class="dropdown-item" href="{{ path('app_user') }}">Utilisateurs</a></li>
               </ul>
             </li>
+            <li class="nav-item">
+              <a href="{{ path('app_logout') }} " class='nav-link'>Se déconnecter</a>
+            </li> 
         {% endif %}
         {% if app.user == false %}
           <li class="nav-item">
