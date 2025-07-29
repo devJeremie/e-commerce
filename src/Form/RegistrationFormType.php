@@ -52,7 +52,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('_token', CsrfToken::class)
+            // ->add('_token', CsrfToken::class)
         ;
     }
 

@@ -55,7 +55,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+                $entityManager->flush();
 
             $this->addFlash('success', 'Votre catégorie à bien été modifiée.');
 
