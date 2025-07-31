@@ -53,7 +53,7 @@ class UserController extends AbstractController
     
 
     #[Route('/admin/user/{id}/remove/editor/role ', name: 'app_user_remove_editor_role')]
-    public function removeRoleeditor(EntityManagerInterface $entityManager, User $user): Response
+    public function removeRoleEditor(EntityManagerInterface $entityManager, User $user): Response
     {
         $user->setRoles([]);
         $entityManager->flush();
