@@ -47,6 +47,7 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/editor, roles: ROLE_EDITOR }
+        # - { path: ^/sub/category, roles: ROLE_ADMIN } pour securiser en centralisant la route 
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

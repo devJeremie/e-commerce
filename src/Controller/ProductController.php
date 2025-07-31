@@ -28,7 +28,7 @@ class ProductController extends AbstractController
             'products' => $productRepository->findAll(),
         ]);
     }
-#region Diego
+#region Add
     #[Route('/new', name: 'app_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
@@ -73,7 +73,7 @@ class ProductController extends AbstractController
         ]);
     }
 #endregion 
-#region TEST2
+#region Show
     #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
     public function show(Product $product): Response
     {
@@ -106,7 +106,7 @@ class ProductController extends AbstractController
                 
             }
 
-#endregion
+
             $entityManager->flush();
 
             $this->addFlash('success','Votre produit a été modifié');
@@ -118,7 +118,8 @@ class ProductController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #endregion
+    #region Delete
     #[Route('/{id}', name: 'app_product_delete', methods: ['POST'])]
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
@@ -131,7 +132,8 @@ class ProductController extends AbstractController
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
-
+    #endregion
+    #region Stock
     #[Route('/add/product/{id}/stock', name: 'app_product_stock_add', methods: ['POST','GET'])]
     public function stockAdd($id, EntityManagerInterface $entityManager, Request $request, ProductRepository $productRepository): Response
     {
@@ -182,3 +184,4 @@ class ProductController extends AbstractController
         ]);
     }
 }
+#endregion
