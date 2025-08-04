@@ -149,7 +149,7 @@ class ProductController extends AbstractController
                 $newQuantity = $product->getStock() + $stockAdd->getQuantity();
                 $product->setStock($newQuantity);
 
-                $stockAdd->setCreatedAt(new DateTimeImmutable());
+                $stockAdd->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $stockAdd->setProduct($product);
                 $entityManager->persist($stockAdd);
                 $entityManager->flush();
@@ -160,9 +160,7 @@ class ProductController extends AbstractController
                 $this->addFlash('danger', "Le stock du produit ne doit pas être inférieur à zéro");
                 return $this->redirectToRoute('app_product_stock_add', ['id'=>$product->getId()]);
             }
-
-            
-          
+  
         }
 
         return $this->render('product/addStock.html.twig',

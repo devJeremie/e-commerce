@@ -13,7 +13,7 @@
             <tr>
                 <td>{{ productAdded.id }}</td>
                 <td>{{ productAdded.quantity }}</td>
-                <td>{{ productAdded.createdAt|date('d-m-Y H:i:s') }}</td>
+                <td>{{ productAdded.createdAt|date('d-m-Y H:i:s', 'Europe/Paris') }}</td>
             </tr>
             {% endfor %}
         </table>
