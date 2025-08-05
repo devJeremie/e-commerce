@@ -52,14 +52,16 @@ class HomeController extends AbstractController
     #[Route('/product/subcategory/{id}/filter ', name: 'app_home_product_filter', methods: ['GET'])]
     public function filter($id, SubCategoryRepository $subCategoryRepository, CategoryRepository $categoryRepository): Response //ici on recupere l'id et la repo des sous catégories
     
-    {
-        $product = $subCategoryRepository->find($id)->getProducts(); //on a crée une variable qui contient le repo des sous-catégories que l'on récup grace a leur id et on recherche les produits qui sont reliés
+    {   //on recupere la sous catégorie correcpondante à l'id passé en paramètre
+        // on accede aux products de cette sous catégorie
+        $product = $subCategoryRepository->find($id)->getProducts(); 
+        // on recupere la sous catégorie complete(objet)
         $subCategory = $subCategoryRepository->find($id);
         
-        return $this->render('home/filter.html.twig', [ //il faut bien sur créer ce fichier
-        'products'=>$product,
-        'subCategory'=>$subCategory,
-        'categories'=>$categoryRepository->findAll()
+        return $this->render('home/filter.html.twig', [ 
+        'products'=>$product, //liste des produits lies a la sous categorie
+        'subCategory'=>$subCategory,// l'objet sous categorie qui corrspond a l'id
+        'categories'=>$categoryRepository->findAll() //la liste de toutes les categories via la repo
         ]);
     }
 }
