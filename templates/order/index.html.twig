@@ -95,5 +95,56 @@
             })
         })
     </script>
+    <script>//en javascript Vanilla sans jquery
+    //     document.addEventListener('DOMContentLoaded', function() {
+    // // Sélection de l'élément avec l'ID "order_city"
+    //         const citySelector = document.getElementById('order_city');
+
+    //         // Fonction pour faire une requête AJAX GET
+    //         function ajaxRequest(url) {
+    //             fetch(url)
+    //                 .then(response => response.text()) // récupère la réponse brute (texte)
+    //                 .then(raw => {
+    //                     const newResponse = JSON.parse(raw);
+
+    //                     if (parseInt(newResponse.status) === 200) {
+    //                         console.log(newResponse.status);
+
+    //                         // Mise à jour du contenu de shippingCost
+    //                         document.getElementById('shippingCost').textContent = newResponse.content;
+
+    //                         // Récupération et maj des prix
+    //                         const cardPrice = parseInt(document.getElementById('card-price').textContent, 10);
+    //                         const shippingCost = parseInt(document.getElementById('shippingCost').textContent, 10);
+
+    //                         // Mise à jour du prix total (premier élément trouvé avec la classe 'total-price')
+    //                         const totalPriceElem = document.querySelector('.total-price');
+    //                         if (totalPriceElem) {
+    //                             totalPriceElem.textContent = cardPrice + shippingCost;
+    //                         }
+    //                     }
+    //                 })
+    //                 .catch(error => {
+    //                     // À remplacer par le code à exécuter en cas d'erreur
+    //                     // console.error('Erreur AJAX:', error);
+    //                 });
+    //         }
+
+    //         // Si citySelector existe :
+    //         if (citySelector) {
+    //             const cityValue = citySelector.value;
+    //             const url = `http://localhost:8000/city/${cityValue}/shipping/cost`;
+
+    //             ajaxRequest(url);
+
+    //             // Écouteur sur le changement de ville
+    //             citySelector.addEventListener('change', function() {
+    //                 const urlUpdate = `http://localhost:8000/city/${this.value}/shipping/cost`;
+    //                 ajaxRequest(urlUpdate);
+    //             });
+    //         }
+    //     });
+
+    // </script>
     
 {% endblock %}
