@@ -17,18 +17,25 @@ class UserControllerTest extends KernelTestCase
     private $userRepository;
     private $userController;
 
+    private function createSchema(): void
+    {
+        $this->entityManager->getConnection()->executeStatement('CREATE TABLE IF NOT EXISTS 
+            user (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL)');
+        //SI nécessaire on peut ajouter d'autre tables ici
+    }
+
     protected function setUp(): void
     {
         // Démarre le kernel Symfony pour avoir accès aux services
         self::bootKernel();
-
         // Récupère le conteneur de services
         $container = static::getContainer();
 
         // Utilise le conteneur pour obtenir les services réels au lieu de mocks
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
-        $this->userRepository = $container->get(UserRepository::class);
+        $this->createSchema(); // Crée le schéma de la base de données pour les tests
 
+        $this->userRepository = $container->get(UserRepository::class);
         // Crée une instance réelle du contrôleur avec les services
         $this->userController = new UserController($this->entityManager, $this->userRepository);
     }
@@ -108,17 +115,26 @@ class UserControllerTest extends KernelTestCase
         // Cela assure que toute la logique de nettoyage standard est exécutée
         parent::tearDown();
 
-        // Désactive temporairement les vérifications de clés étrangères
-        // Cela permet de tronquer les tables sans se soucier des contraintes de clés étrangères
-        $this->entityManager->getConnection()->executeStatement('SET FOREIGN_KEY_CHECKS=0');
+        //Pour SQLite : supprime et recrée la table user à chaque test
+        $this->entityManager->getConnection()->executeStatement('DROP TABLE IF EXISTS user');
 
-        // Vide complètement la table 'user'
-        // TRUNCATE est plus rapide que DELETE et réinitialise les auto-incréments
-        $this->entityManager->getConnection()->executeStatement('TRUNCATE TABLE user');
+        $this->createSchema();
 
-        // Réactive les vérifications de clés étrangères
-        // Important pour maintenir l'intégrité de la base de données pour les tests suivants
-        $this->entityManager->getConnection()->executeStatement('SET FOREIGN_KEY_CHECKS=1');
+        // Efface tous les objets gérés par l'EntityManager
+        // Cela évite que des entités en mémoire ne soient réutilisées dans les tests suivants
+        $this->entityManager->clear();
+
+        // // Désactive temporairement les vérifications de clés étrangères
+        // // Cela permet de tronquer les tables sans se soucier des contraintes de clés étrangères
+        // $this->entityManager->getConnection()->executeStatement('SET FOREIGN_KEY_CHECKS=0');
+
+        // // Vide complètement la table 'user'
+        // // TRUNCATE est plus rapide que DELETE et réinitialise les auto-incréments
+        // $this->entityManager->getConnection()->executeStatement('TRUNCATE TABLE user');
+
+        // // Réactive les vérifications de clés étrangères
+        // // Important pour maintenir l'intégrité de la base de données pour les tests suivants
+        // $this->entityManager->getConnection()->executeStatement('SET FOREIGN_KEY_CHECKS=1');
 
         // Efface tous les objets gérés par l'EntityManager
         // Cela évite que des entités en mémoire ne soient réutilisées dans les tests suivants
