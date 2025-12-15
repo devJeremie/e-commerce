@@ -45,15 +45,50 @@ class SecurityControllerTest extends WebTestCase
 
     public function testLoginRedirectsIfAlreadyAuthenticated(): void
     {
-        // 1. Crée un client HTTP simulé
+        // 1. Crée un client HTTP simulé pour interagir avec l'application.
         $client = static::createClient();
-        // Simule un user connecté (on configure après)
-        // $client->loginUser('test@test.com', 'password');
-        // 2. Effectue une requête GET vers l'URL '/login'
+        // 2. Accède au conteneur de services du kernel de test.
+        $container = static::getContainer();
+        // 3. Récupère le service qui gère la récupération
+        // des utilisateurs (User Provider).
+        // L'alias 'app_user_provider_test' est spécifique à l'environnement de test et doit être configuré
+        // pour récupérer les utilisateurs nécessaires au test 
+        //(souvent à partir d'une fixture ou d'un service mocké).
+        $userProvider = $container->get('security.user.provider.concrete.app_user_provider_test');
+        // 4. Charge l'objet utilisateur réel (l'entité User) en utilisant un identifiant
+        //(ici, l'email 'test@test.com').
+        $user = $userProvider->loadUserByIdentifier('test@test.com');
+        // 5. Simule la connexion de cet objet utilisateur au client HTTP.
+        // À partir de ce point, le client est considéré comme authentifié par Symfony.
+        $client->loginUser($user);
+        // --- Exécution de la Requête ---
+        // 6. Effectue une requête GET vers l'URL '/login' alors que le client est connecté.
         $client->request('GET', '/login');
-        // 3. Assertion : // $this->assertResponseRedirects('/home', 302); 
-        // Vérifie le code 302 et la destination
-        $this->assertResponseIsSuccessful(); // Temporairement
-
+        // --- Assertion ---
+        // 7. Assertion : Vérifie que la réponse du serveur est une redirection (code HTTP 3xx).
+        // C'est le comportement attendu : un utilisateur déjà connecté ne doit pas voir la page de connexion,
+        // mais doit être renvoyé vers une autre route.
+        $this->assertResponseRedirects();
+    }
+    public function testLogoutWorks(): void
+    {
+        // 1. Crée un client HTTP simulé.
+        $client = static::createClient();
+        // --- Étape d'Authentification (Nécessaire pour tester la déconnexion) ---
+        // 2. Accède au conteneur de services pour récupérer l'utilisateur.
+        $container = static::getContainer();
+        // 3. Récupère le service qui fournit les utilisateurs de test.
+        $userProvider = $container->get('security.user.provider.concrete.app_user_provider_test');
+        // 4. Charge l'objet utilisateur 'test@test.com'.
+        $user = $userProvider->loadUserByIdentifier('test@test.com');
+        // 5. Simule la connexion de cet utilisateur au client.
+        // Le client est maintenant dans l'état 'connecté'.
+        $client->loginUser($user);
+        $client->request('GET', '/logout');
+        // --- Assertion ---
+        // 7. Assertion : Vérifie que la réponse du serveur est une redirection (code HTTP 3xx).
+        // Une déconnexion réussie invalide la session et redirige l'utilisateur
+        // vers une destination configurée (souvent la page d'accueil ou la page de connexion).
+        $this->assertResponseRedirects();
     }
 }
