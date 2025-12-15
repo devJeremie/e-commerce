@@ -70,6 +70,7 @@ class SecurityControllerTest extends WebTestCase
         // mais doit être renvoyé vers une autre route.
         $this->assertResponseRedirects();
     }
+    
     public function testLogoutWorks(): void
     {
         // 1. Crée un client HTTP simulé.
