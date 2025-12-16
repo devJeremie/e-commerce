@@ -1,5 +1,4 @@
 #Test CI/CD
-
 # Le nom qui s'affichera dans l'interface GitHub Actions
 name: Tests Symfony E-commerce
 # ------------------------------------------------------------------
