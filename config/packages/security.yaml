@@ -59,7 +59,7 @@ when@test:
             app_user_provider_test:  # ← AJOUT
                 memory:              # ← AJOUT
                     users:
-                        test@test.com: { password: password,  roles: ['ROLE_USER'] } # ← Modification
+                        test@test.com: { password: password,  roles: ['ROLE_USER', 'ROLE_ADMIN'] } # ← Modification
                            
         firewalls:
             main:
