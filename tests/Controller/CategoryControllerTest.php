@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Tests fonctionnels du CategoryController
  * 
@@ -36,12 +35,10 @@ class CategoryControllerTest extends WebTestCase
     /**
      * @test
      * ADMIN CONNECTÉ → Index accessible (200 OK)
-     * 
      * Scénario :
      * - test@test.com (ROLE_ADMIN via .env.test)
      * - Mock CategoryRepository::findAll() → [] (pas de DB)
      * - Vérifie render('category/index.html.twig')
-     * 
      * Résultat attendu : HTTP 200 + template OK
      */
     public function testAuthenticatedAdminAccess(): void
@@ -66,12 +63,10 @@ class CategoryControllerTest extends WebTestCase
     /**
      * @test
      * ADMIN CONNECTÉ → Formulaire création accessible (200 OK)
-     * 
      * Scénario :
      * - test@test.com (ROLE_ADMIN)
      * - Mock CategoryRepository (même pour /new)
      * - Vérifie CategoryFormType + render('category/newCategory.html.twig')
-     * 
      * Résultat attendu : HTTP 200 + formulaire OK
     */
     public function testAddFormRequiresAdmin(): void
@@ -93,5 +88,7 @@ class CategoryControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/admin/category/new');
         // Vérifie formulaire CategoryFormType + bouton Sauvegarder
         $this->assertResponseIsSuccessful();
+        // 💡 Bonus : bouton form
+        $this->assertSelectorExists('input[value="Sauvegarder"]'); 
     }
 }
