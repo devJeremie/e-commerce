@@ -6,25 +6,29 @@
 <div class="container containerForm">
     <div class="loginForm">
         <h1>Inscription</h1>
-
+        <!-- Affichage des erreurs globales du formulaire (ex: CSRF invalide) -->
         {{ form_errors(registrationForm) }}
-
+        <!-- Démarre le formulaire HTML avec action/route automatique + enctype -->
         {{ form_start(registrationForm) }}
+             <!-- Token CSRF pour protéger contre les attaques CSRF -->
              {{ csrf_token('intention') }}
+            <!-- Champ EMAIL avec classe Bootstrap + placeholder personnalisé -->
             {{ form_widget(registrationForm.email, {'attr':{'class':'form form-control mt-3',
                                                         'placeholder': "email"}}) }}
-            
+            <!-- Champ PRENOM : même style Bootstrap -->
             {{ form_widget(registrationForm.firstName, {'attr':{'class':'form form-control mt-3',
                                                             'placeholder': "prénom"}}) }} 
+            <!-- Champ NOM : même style, margin-top pour espacement -->                                           
             {{ form_widget(registrationForm.lastName, {'attr':{'class':'form form-control mt-3',
                                                             'placeholder': "nom de famille"}}) }}
-            
+            <!-- Champ MOT DE PASSE : mot de passe + margin-bottom pour bouton -->
             {{ form_widget(registrationForm.plainPassword, {'attr':{'class':'form form-control mt-3 mb-3',
                                                                 'placeholder': "mot de passe"}}) }}
-            
+            <!-- Checkbox CONDITIONS : form_row = label + champ + erreurs auto -->
             {{ form_row(registrationForm.agreeTerms, {'label': "Veuillez accepter les conditions d'utilisation"}) }}
-
+            <!-- Bouton SUBMIT Bootstrap avec pleine largeur -->
             <button type="submit" class="btn btn-primary btn-block mt-4">Inscription</button>
+        <!-- Ferme le formulaire + hidden fields automatiques -->
         {{ form_end(registrationForm) }}
         </div>
     </div>
