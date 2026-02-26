@@ -37,7 +37,13 @@ class CategoryController extends AbstractController
             $entityManager->persist($category);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Votre catégorie à bien été créée');
+            $this->addFlash('success', /* The phrase `'Votre catégorie à bien été créée'` is a message
+            that will be displayed as a success flash message after a new
+            category has been successfully created in the `addCategory`
+            method of the `CategoryController` class. This message
+            informs the user that the category creation process was
+            successful. */
+            'Votre catégorie à bien été créée');
 
             return $this->redirectToRoute('app_category');
         }
