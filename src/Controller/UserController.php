@@ -19,36 +19,57 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/user/{id}/to/editor ', name: 'app_user_to_editor')] //remettre la wildcard {role} pour selection du role en question
+    #[Route('/admin/user/{id}/change-role/{role}', name: 'app_user_change_role')] //remettre la wildcard {role} pour selection du role en question
     public function changeRole(EntityManagerInterface $entityManager, User $user, $role): Response
     {
-        $user->setRoles(['ROLE_EDITOR', 'ROLE_USER']);
-        $entityManager->flush();
-
-        $this->addFlash('success', "Le rôle éditeur à bien été ajouté à l'utilisateur");
-
-        return $this->redirectToRoute('app_user');
+        /**
+         * Permet à un admin de changer le rôle d'un utilisateur via un lien
+         * Exemple: /admin/user/42/change-role/ROLE_EDITOR
+         * 
+         * @param EntityManagerInterface $entityManager Pour persister les changements en BDD
+         * @param User $user L'utilisateur à modifier (récupéré automatiquement via param converter)
+         * @param string $role Le rôle à attribuer (ROLE_EDITOR, ROLE_USER...)
+         * @return Response Redirection vers la liste users avec message flash
+         */
         
         // On définit une liste blanche des rôles valides pour éviter les abus
-    //     $validRoles = ['ROLE_EDITOR', 'ROLE_SOUS_ADMIN', 'ROLE_USER'];
+        $validRoles = ['ROLE_EDITOR', 'ROLE_USER'];
 
-    //     if (!in_array($role, $validRoles)) {
-    //         $this->addFlash('error', "Le rôle demandé n'est pas valide.");
-    //         return $this->redirectToRoute('app_user');
-    //     }
+        // Vérification sécurité : rôle valide ?
+        // in_array($role, $validRoles, true)
+        // Vérifie si $role EST DANS le tableau $validRoles
+        // true = comparaison stricte (type + valeur)
+        // Retourne true ou false
 
-    //     // On remplace complètement la liste des rôles par le rôle demandé plus éventuellement ROLE_USER par défaut
-    //     if ($role !== 'ROLE_USER') {
-    //         $user->setRoles([$role, 'ROLE_USER']);
-    //     } else {
-    //         $user->setRoles([$role]);
-    //     }
-
-    //     $entityManager->flush();
-
-    //     $this->addFlash('success', "Le rôle $role a bien été attribué à l'utilisateur.");
-
-    //     return $this->redirectToRoute('app_user');
+        if (!in_array($role, $validRoles, true)) {
+            $this->addFlash('error', "Le rôle demandé n'est pas valide.");
+            return $this->redirectToRoute('app_user');
+        }
+        //sans le code precedetn le !in_array qui verifie les roles donc mon code serai comme ceci 
+        // Sans le !in_array()
+        // public function changeRole(User $user, string $role) {
+        //     $user->setRoles([$role, 'ROLE_USER']);  // ← N'IMPORTE QUEL RÔLE !
+        //     $entityManager->flush();
+        // }
+        //Et bien en url on pourrait mettre un truc du style 
+        //URL malveillante : /admin/user/42/change-role/ROLE_BYPASS_FIREWALL
+        //il faudrait juste quil trouve la route de l'url et cest gagné
+        //et au prochian login et bien l'id 42 aurai tout les dreoit d'admin 
+        //sans que personne ne s'en rende compte, c'est pour cela que l'on verifie 
+        //que le role est dans la liste blanche des roles valides avant de l'attribuer à l'utilisateur
+        // On remplace complètement la liste des rôles par le rôle demandé plus éventuellement 
+        // ROLE_USER par défaut
+        if ($role !== 'ROLE_USER') {
+            $user->setRoles([$role, 'ROLE_USER']);
+        } else {
+            $user->setRoles([$role]);
+        }
+        // Sauvegarde en base de données
+        $entityManager->flush();
+        // Message de confirmation
+        $this->addFlash('success', "Le rôle $role a bien été attribué à l'utilisateur.");
+        // Redirection vers la liste des utilisateurs
+        return $this->redirectToRoute('app_user');
     }
     
 

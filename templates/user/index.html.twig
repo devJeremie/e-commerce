@@ -38,7 +38,7 @@
                     <td>
                         {% if ('ROLE_ADMIN' in user.roles) == false %}
                             {% if ('ROLE_EDITOR' in user.roles) == false %}
-                                {# <a onclick= "return confirm('Voulez vous vraiment affecter ce rôle à ce user ?')" class="btn btn-outline-primary" href="{{ path('app_user_change_role', {'id': user.id, 'role': 'ROLE_EDITOR'}) }}">" >Ajouter le rôle éditeur</a> #}
+                                <a onclick= "return confirm('Voulez vous vraiment affecter ce rôle à ce user ?')" class="btn btn-outline-primary" href="{{ path('app_user_change_role', {'id': user.id, 'role': 'ROLE_EDITOR'}) }}">Ajouter le rôle éditeur</a>
                             {% else %}
                                   <a onclick= "return confirm('Voulez vous vraiment retirer ce rôle à ce user ?')" class="btn btn-outline-danger" href="{{ path('app_user_remove_editor_role', {'id':user.id}) }}" >Retirer le rôle éditeur</a>
                             {% endif %}
