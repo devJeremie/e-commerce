@@ -45,7 +45,7 @@ class UserController extends AbstractController
             $this->addFlash('error', "Le rôle demandé n'est pas valide.");
             return $this->redirectToRoute('app_user');
         }
-        //sans le code precedetn le !in_array qui verifie les roles donc mon code serai comme ceci 
+        //sans le code precedent le !in_array qui verifie les roles donc mon code serai comme ceci 
         // Sans le !in_array()
         // public function changeRole(User $user, string $role) {
         //     $user->setRoles([$role, 'ROLE_USER']);  // ← N'IMPORTE QUEL RÔLE !
