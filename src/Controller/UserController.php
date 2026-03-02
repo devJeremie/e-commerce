@@ -54,7 +54,7 @@ class UserController extends AbstractController
         //Et bien en url on pourrait mettre un truc du style 
         //URL malveillante : /admin/user/42/change-role/ROLE_BYPASS_FIREWALL
         //il faudrait juste quil trouve la route de l'url et cest gagné
-        //et au prochian login et bien l'id 42 aurai tout les dreoit d'admin 
+        //et au prochain login et bien l'id 42 aurai tout les droit d'admin 
         //sans que personne ne s'en rende compte, c'est pour cela que l'on verifie 
         //que le role est dans la liste blanche des roles valides avant de l'attribuer à l'utilisateur
         // On remplace complètement la liste des rôles par le rôle demandé plus éventuellement 
