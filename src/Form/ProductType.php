@@ -4,12 +4,12 @@ namespace App\Form;
 
 use App\Entity\Product;
 use App\Entity\SubCategory;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ProductType extends AbstractType
 {
@@ -25,16 +25,16 @@ class ProductType extends AbstractType
                 'mapped' => false,
                 'required' => false, /*ce n'est pas obligatoire comme champ*/
                 'constraints'=>[
-                    new File([ /* c'est cette classe ci "Symfony\Component\Validator\Constraints\File;" */
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
+                    new File( /* c'est cette classe ci "Symfony\Component\Validator\Constraints\File;" */
+                        maxSize : '1024k',
+                        mimeTypes : [
                             'image/jpeg',
                             'image/png',
                             'image/jpg',
                         ],
-                        'maxSizeMessage'=>'Votre image ne doit pas dépasser 1024ko',
-                        'mimeTypesMessage' => 'Veuillez choisir un fichier de type image valide(jpeg, png, jpg)!!',
-                    ])
+                        maxSizeMessage :'Votre image ne doit pas dépasser 1024ko',
+                        mimeTypesMessage : 'Veuillez choisir un fichier de type image valide(jpeg, png, jpg)!!',
+                    )
                 ]
             ])
             ->add('subCategories', EntityType::class, [

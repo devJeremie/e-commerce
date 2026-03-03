@@ -47,7 +47,7 @@ class ProductController extends AbstractController
                 try {
                     $image->move
                         ($this->getParameter('image_directory'),
-                        $newFileImageName);/* on recup l'image et on la renomme et on la stocke dans le repoertoire */
+                        $newFileImageName);/* on recup l'image et on la renomme et on la stocke dans le repertoire */
                 }catch (FileException $exception) {}/*en cas d'erreur*/
                     $product->setImage($newFileImageName);
                 
