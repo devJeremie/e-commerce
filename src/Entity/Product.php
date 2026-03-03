@@ -201,6 +201,8 @@ class Product
                 $orderProduct->setProduct(null);
             }
         }
+        // Quel est le sport préféré des insectes ?
+        // Le criquet
 
         return $this;
     }
