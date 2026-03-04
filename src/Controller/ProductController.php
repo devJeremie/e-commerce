@@ -137,32 +137,37 @@ class ProductController extends AbstractController
     #[Route('/add/product/{id}/stock', name: 'app_product_stock_add', methods: ['POST','GET'])]
     public function stockAdd($id, EntityManagerInterface $entityManager, Request $request, ProductRepository $productRepository): Response
     {
+        // Création d'une nouvelle entité AddProductHistory (historique des ajouts de stock)
         $stockAdd = new AddProductHistory();
+        // Génération du formulaire à partir du type AddProductHistoryType
         $form =$this->createForm(AddProductHistoryType::class, $stockAdd);
         $form->handleRequest($request);
-
+        // Récupération du produit à modifier via son identifiant
         $product = $productRepository->find($id);
-
+        // Vérification du formulaire après soumission
         if ($form->isSubmitted() && $form->isValid()) {
-
+            // Si la quantité saisie est positive
             if($stockAdd->getQuantity()>0){
+                // Calcul de la nouvelle quantité du stock
                 $newQuantity = $product->getStock() + $stockAdd->getQuantity();
                 $product->setStock($newQuantity);
-
+                // Définition de la date d'ajout et liaison avec le produit concerné
                 $stockAdd->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
                 $stockAdd->setProduct($product);
+                // Enregistrement dans la base de données
                 $entityManager->persist($stockAdd);
                 $entityManager->flush();
-
+                // Message de confirmation et redirection vers la liste des produits
                 $this->addFlash('success', "Le stock du produit à été modifié");
                 return $this->redirectToRoute('app_product_index');
             }else {
+                // Si la quantité est négative ou nulle, on empêche la mise à jour
                 $this->addFlash('danger', "Le stock du produit ne doit pas être inférieur à zéro");
                 return $this->redirectToRoute('app_product_stock_add', ['id'=>$product->getId()]);
             }
   
         }
-
+        // Affichage du formulaire et des informations sur le produit
         return $this->render('product/addStock.html.twig',
             ['form'=> $form->createView(),
              'product' => $product,
