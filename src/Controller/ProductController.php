@@ -105,8 +105,6 @@ class ProductController extends AbstractController
                     $product->setImage($newFileImageName);
                 
             }
-
-
             $entityManager->flush();
 
             $this->addFlash('success','Votre produit a été modifié');
