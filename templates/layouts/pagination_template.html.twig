@@ -18,9 +18,6 @@
         </li>
       {% endif %}
     {% endfor %}
-      {# <li class="page-item"><a class="page-link" href="#">1</a></li>
-      
-      <li class="page-item"><a class="page-link" href="#">3</a></li> #}
       {% if next is defined %}
         <li class="page-item">
           <a href="{{ path(route, query|merge({(pageParameterName):next})) }}" class="page-link" href="#">Suivant</a>
