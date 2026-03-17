@@ -109,9 +109,6 @@ class OrderController extends AbstractController
 
         }
 
-       
-    
-
     #[Route('/editor/order/{type}/', name: 'app_orders_show')]
     public function getAllOrder($type, OrderRepository $orderRepository, Request $request, PaginatorInterface $paginator):Response
     {
