@@ -14,6 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CartController extends AbstractController
 {
 
+    //Sert a injecter des dependances dnas notre controller, 
+    //ca va permettre d'utiliser notre repo partout dans le controller 
+    // sans avoir a le repasser en parametre avec $this
     public function __construct(private readonly ProductRepository $productRepository)
     {
         
@@ -24,7 +27,10 @@ class CartController extends AbstractController
     
   public function index(SessionInterface $session, Cart $cart): Response
     {
-       
+
+        // On délègue la logique du panier au service Cart.
+        // Le service va récupérer les données du panier à partir de la session
+        // et calculer le total.
         $data = $cart->getCart($session);
         // $cartProducts = $data['cart']; //on recupere les data et donc le panier
         // $product = []; //on crée une variable qui va recupere nos produits du panier
