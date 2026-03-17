@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+//Réservé a l'admin ou role editor
 #[Route('/editor/city')]
 class CityController extends AbstractController
 {
