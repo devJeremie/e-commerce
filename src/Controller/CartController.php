@@ -14,7 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CartController extends AbstractController
 {
 
-    //Sert a injecter des dependances dnas notre controller, 
+    //Sert a injecter des dependances dans notre controller, donc le repo 
+    //et il sera impossible de le modifier vu qu'il est en readonly
     //ca va permettre d'utiliser notre repo partout dans le controller 
     // sans avoir a le repasser en parametre avec $this
     public function __construct(private readonly ProductRepository $productRepository)
