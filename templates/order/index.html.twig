@@ -87,7 +87,6 @@
             //appel de la fonction
             ajaxRequest(url)
 
-            
             citySelector.on('change',function() {
                 const urlUpdate = `http://localhost:8000/city/${$(this).val()}/shipping/cost`;
                 //alert(urlUpdate)
