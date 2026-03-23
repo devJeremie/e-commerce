@@ -35,7 +35,7 @@
             </div>
         {% endif %}
     </div>
-    // Emoji Picker Integration
+    {#  Emoji Picker Integration
     <textarea id="comment-content"></textarea>
 <button id="emoji-btn">😊</button>
 <script src="https://unpkg.com/emoji-button@latest/dist/emoji-button.min.js"></script>
@@ -46,5 +46,5 @@
     document.querySelector('#comment-content').value += emoji;
   });
   button.addEventListener('click', () => picker.togglePicker(button));
-</script>
+</script> #}
 {% endblock %}

@@ -100,14 +100,14 @@ class OrderController extends AbstractController
                     //dd( $stripeRedirectUrl);
                     return $this->redirect($stripeRedirectUrl);
                 }
-            }
+        }
             
             return $this->render('order/index.html.twig', [
                 'form'=>$form->createView(),
                 'total'=>$data['total'],
             ]);
 
-        }
+    }
 
     #[Route('/editor/order/{type}/', name: 'app_orders_show')]
     public function getAllOrder($type, OrderRepository $orderRepository, Request $request, PaginatorInterface $paginator):Response
