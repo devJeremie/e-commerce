@@ -41,7 +41,6 @@ class CartController extends AbstractController
         //     ); //on boucle sur les produits du panier et on les recupere
         // }
 
-
         // Rendu de la vue pour afficher le panier
         return $this->render('cart/index.html.twig', [
             'items'=>$data['cart'], //on retourne ses deux clés afin de les récuperer dans la vue
