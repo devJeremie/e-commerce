@@ -12,7 +12,6 @@ class Cart
 
     }
 
-
     public function getCart($session):array{
          // Récupère les données du panier en session, ou un tableau vide si il n'y a rien
          $cart = $session->get('cart', []);
