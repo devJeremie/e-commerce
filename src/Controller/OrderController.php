@@ -166,6 +166,4 @@ class OrderController extends AbstractController
 
         return new Response(json_encode(['status'=>200, "message"=>'on', 'content'=> $cityShippingPrice]));
     }
-
-
 }
