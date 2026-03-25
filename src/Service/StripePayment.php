@@ -44,13 +44,21 @@ class StripePayment
 
         $session = Session::create([ //création de la session Stripe
             'line_items'=>[  //produits qui vont etre payer
+                // Transforme chaque produit du panier en format Stripe
                 array_map(fn(array $product) => [
+                    // Quantité commandée pour ce produit
                     'quantity' => $product['qte'],
+                    // Données de tarification créées dynamiquement (pas de Price pré-créé)
                     'price_data' => [
+                        // Devise (minuscule obligatoire : eur, usd, gbp...)
                         'currency' => 'Eur',
+                        // Métadonnées du produit (affichées dans Checkout)
                         'product_data' => [
-                           'name' => $product['name']
+                            // Nom du produit visible dans Stripe Checkout
+                            'name' => $product['name']
                         ],
+                        // Prix unitaire en CENTIMES (obligatoire)
+                        // Ex: 29.99€ → 2999 centimes. Stripe ne gère QUE les centimes !
                         'unit_amount' => $product['price']*100, //prix donnée en centimes donc on multiplie
                     ],
                 ],$products)
