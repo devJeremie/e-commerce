@@ -23,9 +23,8 @@ class StripeController extends AbstractController
     {
         $session->set('cart',[]);
         // Rendre la vue "index.html.twig" avec le nom du contrôleur
-        return $this->render('stripe/index.html.twig', [
-            'controller_name' => 'StripeController',
-        ]);
+        return $this->render('stripe/success.html.twig', 
+            []);
     }
 
     /**
@@ -37,9 +36,8 @@ class StripeController extends AbstractController
     public function cancel(): Response
     {
         // Rendre la vue "index.html.twig" avec le nom du contrôleur
-        return $this->render('stripe/index.html.twig', [
-            'controller_name' => 'StripeController',
-        ]);
+        return $this->render('stripe/cancel.html.twig', 
+        []);
     }
 
     /**
