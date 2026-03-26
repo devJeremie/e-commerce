@@ -54,7 +54,7 @@ class StripeController extends AbstractController
         Stripe::setApiKey($_SERVER['STRIPE_SECRET_KEY']);
         
         // Définir la clé de webhook de Stripe
-        $endpoint_secret = 'whsec_762838b6a470d9e24ef2fd08b52ec325225147e39308429459f540637fc2205b';
+        $endpoint_secret = $_SERVER['STRIPE_WEBHOOK_SECRET'];
         // Récupérer le contenu de la requête
         $payload = $request->getContent();
         // Récupérer l'en-tête de signature de la requête
@@ -81,25 +81,28 @@ class StripeController extends AbstractController
                 // Récupérer l'objet payment_intent
                 $paymentIntent = $event->data->object;
                 
-                // Enregistrer les détails du paiement dans un fichier
-                $fileName = 'stripe-detail-'.uniqid().'.txt';
+                // // Enregistrer les détails du paiement dans un fichier
+                // $fileName = 'stripe-detail-'.uniqid().'.txt';
 
                 $orderId = $paymentIntent->metadata->orderId;
                 $order = $orderRepository->find($orderId);
 
+                if(!$order) {
+                    return new Response('Commande non trouvée', 404);
+                }
+
                 $cartPrice = $order->getTotalPrice();
                 $stripeTotalAmount = $paymentIntent->amount/100;
+
                 if($cartPrice==$stripeTotalAmount){
                     $order->setIsPaymentCompleted(1);
                     $entityManager->flush();
                 }
-
-                
                 // file_put_contents($fileName, $orderId);
                 break;
             case 'payment_method.attached':   // Événement de méthode de paiement attachée
                 // Récupérer l'objet payment_method
-                $paymentMethod = $event->data->object; 
+                // $paymentMethod = $event->data->object;  car pas utilisé
                 break;
             default :
                 // Ne rien faire pour les autres types d'événements
