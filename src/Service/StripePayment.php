@@ -51,14 +51,14 @@ class StripePayment
                     // Données de tarification créées dynamiquement (pas de Price pré-créé)
                     'price_data' => [
                         // Devise (minuscule obligatoire : eur, usd, gbp...)
-                        'currency' => 'Eur',
+                        'currency' => 'eur',
                         // Métadonnées du produit (affichées dans Checkout)
                         'product_data' => [
                             // Nom du produit visible dans Stripe Checkout
                             'name' => $product['name']
                         ],
                         // Prix unitaire en CENTIMES (obligatoire)
-                        // Ex: 29.99€ → 2999 centimes. Stripe ne gère QUE les centimes !
+                // Ex: 29.99€ → 2999 centimes. Stripe ne gère QUE les centimes !
                         'unit_amount' => $product['price']*100, //prix donnée en centimes donc on multiplie
                     ],
                 ],$products)
