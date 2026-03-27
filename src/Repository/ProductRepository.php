@@ -46,17 +46,17 @@ public function searchEngine(string $query) {
     //    /**
     //     * @return Product[] Returns an array of Product objects
     //     */
-       public function findByIdUp($value): array
-       {
-           return $this->createQueryBuilder('p') //retourner la requete
-               ->andWhere('p.id > :val') // ajoute des critères val = $value
-               ->setParameter('val', $value) //on set les parametres
-               ->orderBy('p.id', 'ASC') //on definit les criteres
-               ->setMaxResults(10) //definit le nbr de resultat
-               ->getQuery() //
-               ->getResult() //
-           ;
-       }
+    //    public function findByIdUp($value): array
+    //    {
+    //        return $this->createQueryBuilder('p') //retourner la requete
+    //            ->andWhere('p.id > :val') // ajoute des critères val = $value
+    //            ->setParameter('val', $value) //on set les parametres
+    //            ->orderBy('p.id', 'ASC') //on definit les criteres
+    //            ->setMaxResults(10) //definit le nbr de resultat
+    //            ->getQuery() //
+    //            ->getResult() //
+    //        ;
+    //    }
 
     //    public function findOneBySomeField($value): ?Product
     //    {
