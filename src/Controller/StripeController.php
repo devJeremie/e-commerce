@@ -26,12 +26,10 @@ class StripeController extends AbstractController
         return $this->render('stripe/success.html.twig', 
             []);
     }
-
     /**
      * Route pour la page d'annulation du paiement
      * 
      */
-    
     #[Route('/pay/cancel', name: 'app_stripe_cancel')]
     public function cancel(): Response
     {
